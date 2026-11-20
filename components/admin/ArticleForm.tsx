@@ -119,6 +119,11 @@ export function ArticleForm({ slug }: { slug?: string }) {
             <span>{uploading ? 'Đang tải...' : 'Upload'}</span>
           )}
         </div>
+        <div className={s.hint} style={{ lineHeight: 1.7 }}>
+          <strong>Kích thước khuyến nghị: 1920 × 820 px</strong> (ngang, tỉ lệ 21:9), png/jpg/webp, tối đa 10 MB.
+          <br />
+          Ảnh này là banner đầu bài. Ảnh sai tỉ lệ vẫn dùng được nhưng sẽ bị cắt phần trên/dưới để vừa khung (tối đa cao 560px), nên đặt nội dung chính ở giữa ảnh.
+        </div>
         {err('thumbnail')}
       </div>
 

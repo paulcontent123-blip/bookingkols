@@ -69,10 +69,14 @@
       }
     }
 
+    // Banner có khung cố định (tỉ lệ 21:9, cao tối đa 560px): ảnh tải lên cao/rộng cỡ nào cũng được cắt vừa khung.
     > img {
       display: block;
       width: 100%;
+      aspect-ratio: 21 / 9;
+      max-height: 560px;
       object-fit: cover;
+      object-position: center;
     }
   }
 
@@ -107,20 +111,6 @@
     .content {
       padding: 40px 70px;
       background-color: var(--grey-alpha-10);
-
-      .ckeditor-content {
-        img {
-          display: block;
-          max-width: 100%;
-          height: auto;
-          margin: 24px auto;
-        }
-
-        figure.image {
-          margin: 24px auto;
-          max-width: 100%;
-        }
-      }
     }
   }
 }
@@ -218,6 +208,10 @@
   .article-container {
     .content-container {
       padding: 0;
+    }
+
+    .banner > img {
+      aspect-ratio: 16 / 9;
     }
 
     .banner {

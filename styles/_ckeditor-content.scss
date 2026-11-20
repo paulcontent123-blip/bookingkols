@@ -1,4 +1,24 @@
 .ckeditor-content {
+  // Ảnh dán/tải vào bài có thể rộng hàng nghìn px hoặc mang sẵn width/height cố định: luôn co lại vừa khung, giữ tỉ lệ.
+  img {
+    display: block;
+    max-width: 100% !important;
+    height: auto !important;
+    margin: 24px auto;
+  }
+
+  figure {
+    max-width: 100%;
+    margin: 24px auto;
+  }
+
+  iframe,
+  video {
+    display: block;
+    max-width: 100%;
+    margin: 24px auto;
+  }
+
   h2 {
     font-size: 20pt;
     margin-bottom: 8px !important;
