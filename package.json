@@ -14,7 +14,6 @@
     "build:deploy": "next build && node scripts/prepare-deploy.mjs",
     "start:standalone": "node .next/standalone/server.js",
     "smoke": "node --env-file=.env scripts/smoke-test.mjs",
-    "migrate:avatars": "node --env-file=.env scripts/migrate-kol-avatars.mjs",
     "db:migrate": "node --env-file=.env scripts/apply-schema.mjs",
     "dev:preview": "node scripts/dev-preview.mjs"
   },

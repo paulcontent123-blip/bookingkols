@@ -15,7 +15,7 @@ export function KolProfileCard({ profile }: { profile: KolProfile }) {
         <div className={s.details}>
           <h3 className={s.profilename}>{profile.nickname || profile.name}</h3>
           <div className={s['btn-group']}>
-            <a className={s.button} href={profile.socialNetworkInfo.tiktokUrl ?? undefined}>
+            <a className={s.button} href={profile.socialNetworkInfo.tiktokUrl ?? undefined} target="_blank" rel="noopener noreferrer">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={cdnImage('assets/icon/tiktok.svg')} alt="tiktok" />
               {profile.socialNetworkInfo.tiktokFollowerCount}

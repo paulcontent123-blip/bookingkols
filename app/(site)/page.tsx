@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { cdnImage } from '@/lib/cdn';
-import { listPublishedKols } from '@/lib/kols';
+import { listFeaturedKols, listPublishedKols } from '@/lib/kols';
 import { pageMetadata } from '@/lib/seo';
 import { PAGE_TITLES } from '@/lib/seo-defaults';
 import { PopularList } from '@/components/home/PopularList';
@@ -18,7 +18,7 @@ export function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HomePage() {
-  const kols = await listPublishedKols();
+  const [kols, featured] = await Promise.all([listPublishedKols(), listFeaturedKols()]);
   return (
     <div className={s['home-page']}>
       <div className={s['main-content']}>
@@ -28,7 +28,7 @@ export default async function HomePage() {
         <img className={`${s.banner} ${s.mobile}`} src={cdnImage('assets/images/home-page/lodigital-mobile.png')} alt="lodigital" />
         <PopularList kols={kols} />
         <ListBrand />
-        <TopProfile />
+        <TopProfile profiles={featured} />
         <OurPartner />
         <Faq />
         <OurCustomer />

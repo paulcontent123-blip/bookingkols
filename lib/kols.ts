@@ -4,13 +4,15 @@ import { getSupabase } from './supabase/server';
 import { ApiError } from './errors';
 import { clampPaging, safeKeyword, type Paged } from './articles';
 import { deleteImage } from './cloudinary';
-import { kolCardImage } from './kol-image';
+import { kolCardImage, kolSquareImage } from './kol-image';
 import { normalizeSlug } from './slug';
 import { KOL_FIELD_KEYS } from './kol-fields';
-import { POPULAR_KOLS, type KolProfile } from './home-data';
+import { POPULAR_KOLS, TOP_PROFILES, type KolProfile, type TopProfile } from './home-data';
 
+// Danh sách công khai KHÔNG đọc cột is_featured: trang chủ vẫn chạy bình thường kể cả khi chưa chạy migration thêm cột đó.
 const COLUMNS =
   'id, slug, name, nickname, avatar, province, fields, tiktok_url, tiktok_followers, facebook_url, facebook_followers, youtube_url, youtube_followers, instagram_url, instagram_followers, sort_order, is_published, created_at';
+const ADMIN_COLUMNS = `${COLUMNS}, is_featured`;
 
 interface KolRow {
   id: string;
@@ -30,6 +32,7 @@ interface KolRow {
   instagram_followers: string | null;
   sort_order: number;
   is_published: boolean;
+  is_featured?: boolean;
   created_at: string;
 }
 
@@ -53,6 +56,7 @@ export interface KolAdminItem {
   instagramFollowers: string;
   sortOrder: number;
   isPublished: boolean;
+  isFeatured: boolean;
   createdAt: string;
 }
 
@@ -83,6 +87,7 @@ function toAdminItem(r: KolRow): KolAdminItem {
     instagramFollowers: text(r.instagram_followers),
     sortOrder: r.sort_order,
     isPublished: r.is_published,
+    isFeatured: Boolean(r.is_featured),
     createdAt: r.created_at
   };
 }
@@ -130,10 +135,40 @@ export async function listPublishedKols(): Promise<KolProfile[]> {
   }
 }
 
+/**
+ * KOL nổi bật cho mục "Top profile" (đã bật hiển thị và tick "Nổi bật"), theo thứ tự đã sắp.
+ * Lỗi database (ví dụ chưa chạy migration thêm cột is_featured) thì dùng danh sách dự phòng gõ cứng.
+ */
+export async function listFeaturedKols(): Promise<TopProfile[]> {
+  try {
+    const { data, error } = await getSupabase()
+      .from('kols')
+      .select('id, slug, name, fields, province, avatar')
+      .eq('is_featured', true)
+      .eq('is_published', true)
+      .order('sort_order', { ascending: true })
+      .order('created_at', { ascending: true });
+    if (error) throw error;
+    return (data as Pick<KolRow, 'id' | 'slug' | 'name' | 'fields' | 'province' | 'avatar'>[]).map((r) => ({
+      id: r.id,
+      slug: r.slug,
+      name: r.name,
+      fields: r.fields ?? [],
+      province: r.province,
+      role: 'KOL',
+      avatar: kolSquareImage(r.avatar),
+      totalJob: 0
+    }));
+  } catch (error) {
+    console.error('[kols] Không đọc được KOL nổi bật, dùng danh sách dự phòng:', error);
+    return TOP_PROFILES;
+  }
+}
+
 export async function listKolsAdmin(params: { name?: string; pageIndex?: number; pageSize?: number }): Promise<Paged<KolAdminItem>> {
   const { pageIndex, pageSize } = clampPaging(params.pageIndex, params.pageSize);
   const keyword = safeKeyword(params.name);
-  let query = getSupabase().from('kols').select(COLUMNS, { count: 'exact' });
+  let query = getSupabase().from('kols').select(ADMIN_COLUMNS, { count: 'exact' });
   if (keyword) query = query.or(`name.ilike.%${keyword}%,nickname.ilike.%${keyword}%`);
   const { data, count, error } = await query
     .order('sort_order', { ascending: true })
@@ -145,7 +180,7 @@ export async function listKolsAdmin(params: { name?: string; pageIndex?: number;
 
 export async function getKolAdmin(id: string): Promise<KolAdminItem | null> {
   assertId(id);
-  const { data, error } = await getSupabase().from('kols').select(COLUMNS).eq('id', id).maybeSingle();
+  const { data, error } = await getSupabase().from('kols').select(ADMIN_COLUMNS).eq('id', id).maybeSingle();
   if (error) throw error;
   return data ? toAdminItem(data as KolRow) : null;
 }
@@ -175,7 +210,8 @@ const kolBody = z.object({
   instagramUrl: optionalUrl.default(''),
   instagramFollowers: optionalCount.default(''),
   sortOrder: z.coerce.number({ invalid_type_error: 'Thứ tự phải là số' }).int('Thứ tự phải là số nguyên').min(0, 'Thứ tự không được âm').max(100000).default(0),
-  isPublished: z.boolean().default(true)
+  isPublished: z.boolean().default(true),
+  isFeatured: z.boolean().default(false)
 });
 
 function parseBody(input: unknown) {
@@ -204,7 +240,8 @@ function parseBody(input: unknown) {
     instagram_url: orNull(b.instagramUrl),
     instagram_followers: orNull(b.instagramFollowers),
     sort_order: b.sortOrder,
-    is_published: b.isPublished
+    is_published: b.isPublished,
+    is_featured: b.isFeatured
   };
 }
 
@@ -226,7 +263,7 @@ async function removeImageQuietly(path: string) {
 export async function createKol(input: unknown): Promise<KolAdminItem> {
   const row = parseBody(input);
   await assertSlugAvailable(row.slug);
-  const { data, error } = await getSupabase().from('kols').insert(row).select(COLUMNS).single();
+  const { data, error } = await getSupabase().from('kols').insert(row).select(ADMIN_COLUMNS).single();
   if (error) {
     // Hai người cùng lưu một đường dẫn gần như đồng thời: chỉ mục duy nhất của database chặn lại.
     if ((error as { code?: string }).code === '23505') throw new ApiError(400, 'Đường dẫn đã tồn tại, hãy dùng đường dẫn khác', 'slug');
@@ -243,7 +280,7 @@ export async function updateKol(id: string, input: unknown): Promise<KolAdminIte
   if (!current.data) throw new ApiError(404, 'Không tìm thấy KOL');
   const row = parseBody(input);
   await assertSlugAvailable(row.slug, id);
-  const { data, error } = await db.from('kols').update(row).eq('id', id).select(COLUMNS).single();
+  const { data, error } = await db.from('kols').update(row).eq('id', id).select(ADMIN_COLUMNS).single();
   if (error) {
     if ((error as { code?: string }).code === '23505') throw new ApiError(400, 'Đường dẫn đã tồn tại, hãy dùng đường dẫn khác', 'slug');
     throw error;

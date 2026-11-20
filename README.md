@@ -6,7 +6,7 @@ Thay cho 3 dự án cũ: website Angular `booking-kol`, portal Angular `booking-
 | Phần | Địa chỉ | Thay cho |
 |---|---|---|
 | Website công khai (vi/en) | `/`, `/news`, `/news/<slug>`, `/campaigns`, `/our-service`, `/about-us`, `/contact`, `/privacy`, `/policy`, `/security` | `booking-kol` |
-| Trang quản trị | `/admin` (đăng nhập, Quản lý User / Tin tức / Liên hệ / config SEO, đổi mật khẩu) | `booking-kol-portal` |
+| Trang quản trị | `/admin` (đăng nhập, Quản lý User / Tin tức / KOL / Liên hệ / config SEO, đổi mật khẩu) | `booking-kol-portal` |
 | API | `/api/articles`, `/api/contacts`, `/api/seo-html-contents`, `/api/admin/...` | `booking-kol-be` |
 | SEO | `/sitemap.xml` (mục lục), `/sitemap-pages.xml`, `/sitemap-news.xml`, `/robots.txt`, JSON-LD, hreflang, GTM (GA4 qua GTM) | như cũ |
 
@@ -21,12 +21,13 @@ lib/            logic: Supabase, đăng nhập, bài viết, liên hệ, SEO, Cl
 styles/         SCSS toàn cục (chuyển từ website cũ)
 public/         font, favicon, robots.txt
 supabase/       cấu trúc database (migrations)
-scripts/        create-admin, import-old-db, check-database, smoke-test, migrate-kol-avatars, prepare-deploy
+scripts/        create-admin, import-old-db, check-database, smoke-test, prepare-deploy
 ```
 
 ## Cài đặt lần đầu
 
-1. **Tạo project Supabase**, mở **SQL Editor**, dán toàn bộ `supabase/migrations/20261118000100_initial_schema.sql` rồi **Run**.
+1. **Tạo project Supabase**, mở **SQL Editor**, lần lượt dán rồi **Run** từng file trong `supabase/migrations/` (theo thứ tự tên file:
+   `20261118000100_initial_schema.sql`, sau đó `20261120000100_kols.sql` tạo bảng KOL và nạp sẵn 8 KOL của trang chủ). Hoặc chạy `npm run db:migrate`.
 2. Sao chép `.env.example` thành `.env` và điền: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (Project Settings → API → *service_role*),
    `CLOUDINARY_*`, `JWT_SECRET` (chuỗi ngẫu nhiên dài), `APP_URL`. SMTP điền nếu muốn nhận email khi có liên hệ.
 3. Cài và kiểm tra kết nối:
@@ -48,12 +49,11 @@ Mở `http://localhost:3000` (website) và `http://localhost:3000/admin` (quản
 ## Chuyển dữ liệu từ hệ thống cũ
 
 ```bash
-# 1. Chép người dùng (giữ nguyên mật khẩu), bài viết, config SEO, liên hệ từ PostgreSQL cũ
+# Chép người dùng (giữ nguyên mật khẩu), bài viết, config SEO, liên hệ từ PostgreSQL cũ
 OLD_DATABASE_URL="postgres://dev:MAT_KHAU@IP_SERVER_CU:5433/bookingkol" npm run import:old-db
-
-# 2. Chuyển ảnh đại diện KOL của trang chủ (đang nằm trên server cũ) lên Cloudinary
-npm run migrate:avatars
 ```
+
+Danh sách KOL ở trang chủ nay do admin quản lý tại **/admin/kol-management** (thêm, sửa, xoá, ẩn/hiện, sắp thứ tự; ảnh tải lên Cloudinary và tự cắt vừa khung thẻ), không còn gõ cứng trong mã.
 
 Mật khẩu admin cũ (băm bcrypt của .NET) dùng được nguyên trên hệ thống mới. Ảnh bài viết cũ dạng `images/ten-file.png`
 nằm trên server cũ: đặt `LEGACY_IMAGE_BASE_URL=https://bookingkols.com.vn` để chúng vẫn hiện (chỉ cần khi database cũ có bài viết).

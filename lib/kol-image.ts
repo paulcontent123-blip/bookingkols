@@ -10,6 +10,8 @@ export const KOL_IMAGE_MIN_WIDTH = 600;
 
 // c_fill + g_auto: cắt vừa tỉ lệ, Cloudinary tự giữ lại khuôn mặt/chủ thể chính; f_auto,q_auto: nhẹ nhất có thể.
 const TRANSFORMATION = `f_auto,q_auto,c_fill,g_auto,ar_${KOL_IMAGE_RATIO},w_${KOL_IMAGE_WIDTH}`;
+// Ảnh vuông nhỏ cho mục Top profile (khung 80×80, lấy 320px cho màn hình nét cao).
+const SQUARE_TRANSFORMATION = 'f_auto,q_auto,c_fill,g_auto,ar_1:1,w_320';
 const BASE = `https://res.cloudinary.com/${CDN_CLOUD_NAME}/image/upload`;
 
 /** Bỏ đoạn biến đổi (f_auto,w_800...), đoạn phiên bản (v123) và đuôi file khỏi địa chỉ Cloudinary, chỉ giữ mã ảnh. */
@@ -35,6 +37,15 @@ function publicIdFromCloudinaryUrl(url: string): string | null {
  * ảnh ở nơi khác (ví dụ server cũ) được giữ nguyên vì không cắt được.
  */
 export function kolCardImage(value: string | null | undefined): string {
+  return build(value, TRANSFORMATION);
+}
+
+/** Ảnh KOL cắt vuông (mục Top profile). Quy tắc giống kolCardImage. */
+export function kolSquareImage(value: string | null | undefined): string {
+  return build(value, SQUARE_TRANSFORMATION);
+}
+
+function build(value: string | null | undefined, transformation: string): string {
   const v = (value ?? '').trim();
   if (!v) return '';
   let id: string | null;
@@ -42,5 +53,5 @@ export function kolCardImage(value: string | null | undefined): string {
   else if (v.startsWith('data:')) return v;
   else id = v.replace(/\\/g, '/').replace(/^\/+/, '');
   if (!id) return v;
-  return `${BASE}/${TRANSFORMATION}/${id.split('/').map(encodeURIComponent).join('/')}`;
+  return `${BASE}/${transformation}/${id.split('/').map(encodeURIComponent).join('/')}`;
 }

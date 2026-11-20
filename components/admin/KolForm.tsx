@@ -28,6 +28,7 @@ interface KolData {
   instagramFollowers: string;
   sortOrder: number;
   isPublished: boolean;
+  isFeatured: boolean;
 }
 
 const EMPTY: KolData = {
@@ -47,7 +48,8 @@ const EMPTY: KolData = {
   instagramUrl: '',
   instagramFollowers: '',
   sortOrder: 0,
-  isPublished: true
+  isPublished: true,
+  isFeatured: false
 };
 
 const PLATFORMS = [
@@ -275,6 +277,14 @@ export function KolForm({ id }: { id?: string }) {
           <option value="on">Hiển thị ở trang chủ</option>
           <option value="off">Ẩn</option>
         </select>
+      </div>
+
+      <div className={s.field}>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontWeight: 400 }}>
+          <input type="checkbox" checked={data.isFeatured} onChange={(e) => set('isFeatured', e.target.checked)} />
+          Nổi bật: hiện thêm ở mục &quot;Top profile&quot; giữa trang chủ
+        </label>
+        <div className={s.hint}>Chỉ hiện khi KOL đang ở trạng thái &quot;Hiển thị ở trang chủ&quot;. Ảnh ở mục này được cắt vuông.</div>
       </div>
 
       <div className={s['form-actions']}>

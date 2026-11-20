@@ -18,6 +18,7 @@ interface KolRow {
   tiktokFollowers: string;
   sortOrder: number;
   isPublished: boolean;
+  isFeatured: boolean;
 }
 
 const fieldLabel = (value: string) => KOL_FIELDS.find((f) => f.value === value)?.label ?? value;
@@ -82,6 +83,11 @@ export function KolsAdmin() {
                 <td>{k.sortOrder}</td>
                 <td>
                   <span className={`${s['status-tag']} ${k.isPublished ? s.published : s.draft}`}>{k.isPublished ? 'Đang hiển thị' : 'Đã ẩn'}</span>
+                  {k.isFeatured && (
+                    <div className={s.hint} style={{ marginTop: 6 }}>
+                      ★ Nổi bật
+                    </div>
+                  )}
                 </td>
                 <td>
                   <div className={s['btn-group']}>
