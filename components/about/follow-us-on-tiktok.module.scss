@@ -1,0 +1,30 @@
+.follow-us-on-tiktok {
+  background-color: var(--black);
+
+  .container {
+    margin-left: 108px;
+    margin-right: 108px;
+    padding: 50px 0px;
+
+    h3 {
+      color: white;
+      font-style: italic;
+      font-weight: 900;
+      font-family: var(--font-montserrat-bold-italic);
+    }
+
+    .video-tiktok {
+      margin-top: 40px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+
+      .video-container {
+        height: 580px;
+        overflow: hidden;
+        border-radius: 12px;
+        box-shadow: -6px -5px 3px 0px rgb(102 102 102 / 60%);
+      }
+    }
+  }
+}

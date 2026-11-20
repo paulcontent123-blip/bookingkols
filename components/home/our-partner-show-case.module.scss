@@ -1,0 +1,129 @@
+.list-partner {
+  padding-left: 108px;
+  padding-right: 108px;
+
+  @media (max-width: 700px) {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .partner-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    .partner-activities {
+      display: none;
+    }
+    .partner-card {
+      max-width: 404px;
+      height: 502px;
+      border-radius: 20px;
+      cursor: pointer;
+      box-shadow: 4px 0px 0px 0px #00ffff;
+      position: relative;
+      .banner {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 20px;
+      }
+
+      .partner-info {
+        position: absolute;
+        bottom: 0;
+        left: 20px;
+        bottom: 20px;
+        background: var(--white-alpha-30);
+        display: flex;
+        align-items: center;
+        padding: 8px 6px;
+        border-radius: 40px;
+
+        .logo {
+          width: 50px;
+          height: 50px;
+          object-fit: contain;
+        }
+      }
+    }
+
+    &.active {
+      .partner-activities {
+        display: flex;
+        background-color: var(--grey-alpha-60);
+        gap: 20px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 20px;
+        padding: 10px;
+        img {
+          width: 100px;
+          height: 100px;
+          border-radius: 8px;
+          object-fit: cover;
+          cursor: pointer;
+
+          @media (max-width: 575px) {
+            width: 70px;
+            height: 70px;
+          }
+
+          &.selected-activity {
+            border: 2px solid red;
+          }
+        }
+      }
+      .partner-card {
+        max-width: unset;
+        width: 100%;
+        height: 374px;
+        .banner {
+          object-fit: contain;
+          background-color: var(--grey-alpha-60);
+        }
+      }
+    }
+
+    &.inactive {
+      .partner-card {
+        .partner-info {
+          h3 {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Lưới đối tác (thay cho nz-row/nz-col): mỗi thẻ rộng 33%, thẻ đang chọn rộng 66%, thẻ còn lại 16%.
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  row-gap: 16px;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.col {
+  padding: 0 12px;
+  flex: 0 0 100%;
+  max-width: 100%;
+
+  @media (min-width: 768px) {
+    flex: 0 0 33.3333%;
+    max-width: 33.3333%;
+
+    &.col-active {
+      flex: 0 0 66.6667%;
+      max-width: 66.6667%;
+    }
+
+    &.col-inactive {
+      flex: 0 0 16.6667%;
+      max-width: 16.6667%;
+    }
+  }
+}

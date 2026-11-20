@@ -1,0 +1,115 @@
+/* Style toàn cục của BookingKols (chuyển từ website Angular cũ). */
+
+@import 'base';
+@import 'font';
+@import 'color';
+@import 'button';
+@import 'input';
+@import 'typography';
+@import 'form';
+@import 'ckeditor-content';
+
+body {
+  height: fit-content !important;
+}
+
+:focus-visible {
+  outline: none;
+}
+
+// Ô ẩn chống bot trong form liên hệ: nằm ngoài màn hình, người thật không thấy và không điền.
+.hp-field {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.bk-select {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  color: #555;
+  font-size: 13px;
+  outline: none;
+  font-family: inherit;
+  margin-bottom: 10px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: border-color 0.2s;
+
+  &.filled {
+    color: #eee;
+  }
+
+  &:focus {
+    border-color: rgba(180, 80, 255, 0.6);
+  }
+}
+
+// Khung nội dung chung (trang bên trong header cố định).
+.container {
+  margin-left: 108px;
+  margin-right: 108px;
+}
+
+.content-wrapper {
+  margin-top: 78px;
+  padding-top: 32px;
+}
+
+@media screen and (max-width: 1248px) {
+  .container {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+
+  .content-wrapper {
+    margin-top: 70px;
+  }
+}
+
+// Biến thể chỉ đọc cho người dùng đọc màn hình.
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// Biểu tượng xoay (nút đang gửi).
+.spin {
+  animation: bk-spin 1s linear infinite;
+}
+
+@keyframes bk-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Thanh cuộn (gradient hồng-cam) dùng chung toàn website.
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-thumb:hover {
+  background: radial-gradient(261.59% 990.24% at 0% 62.5%, #ed3961 6.74%, #ffaa18 68.77%, #f06080 100%);
+  border-radius: 8px;
+}

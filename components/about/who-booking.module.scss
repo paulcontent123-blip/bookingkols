@@ -1,0 +1,82 @@
+.home-icon {
+  margin-right: 8px;
+  vertical-align: -0.125em;
+}
+
+.who-booking {
+  background: linear-gradient(90deg, #142544, #0a0c17, #00080d);
+  padding: 100px 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+  margin-top: -35px;
+
+  .title {
+    display: flex;
+    align-items: center;
+
+    h1 {
+      color: var(--neon-light);
+    }
+
+    .who {
+      background-color: var(--neon-light);
+      padding: 3px 15px;
+      margin-right: 10px;
+      border-radius: 5px;
+      font-style: italic;
+
+      h1 {
+        color: var(--pink);
+        font-family: var(--font-montserrat-bold-italic);
+        font-weight: 900;
+      }
+    }
+  }
+
+  .descripttion {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    font-size: 24px;
+    h5 {
+      color: var(--pink);
+    }
+  }
+
+  .customer-types {
+    width: 1200px;
+    display: flex;
+    justify-content: space-around;
+
+    .customer {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      text-align: center;
+
+      img {
+        margin: 0px auto;
+        width: 35px;
+        max-height: 35px;
+        object-fit: cover;
+      }
+
+      h5 {
+        background: linear-gradient(135deg, #009d97 14.06%, #8a3ffc 81%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: 20px;
+      }
+
+      p {
+        max-width: 280px;
+        color: var(--white);
+        font-size: 15px;
+      }
+    }
+  }
+}

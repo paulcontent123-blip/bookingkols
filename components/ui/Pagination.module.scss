@@ -1,0 +1,32 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pagination-item {
+  border: 1px solid var(--black);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--black);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.dots {
+  width: 32px;
+  text-align: center;
+  color: var(--grey-alpha-60);
+}
+
+.active {
+  border: none;
+  background: radial-gradient(316.92% 82.99% at 160.52% 58.05%, #ffce46 0%, #ffcc74 22.9%, #ff8ca6 85.49%);
+  font-weight: 700;
+}

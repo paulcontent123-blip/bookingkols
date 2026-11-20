@@ -1,0 +1,172 @@
+.booking-modal {
+  padding: 40px;
+  max-width: 1400px;
+
+  h2 {
+    margin-bottom: 32px;
+    font-size: 32px;
+    font-weight: 700;
+    color: #0a3254;
+    text-align: left;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .row {
+    display: flex;
+    gap: 32px;
+  }
+
+  .col-form {
+    flex: 0 0 calc(66.6667% - 16px);
+    max-width: calc(66.6667% - 16px);
+  }
+
+  .col-info {
+    flex: 0 0 calc(33.3333% - 16px);
+    max-width: calc(33.3333% - 16px);
+  }
+
+  .label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+
+    &[data-required]::before {
+      content: '*';
+      color: #ff4d4f;
+      margin-right: 4px;
+    }
+  }
+
+  :global(.ant-input) {
+    border-radius: 4px;
+    font-size: 14px;
+    padding: 10px 12px;
+
+    &::placeholder {
+      color: #bfbfbf;
+    }
+  }
+
+  textarea:global(.ant-input) {
+    resize: vertical;
+  }
+
+  .error {
+    margin-top: 4px;
+    color: #ff4d4f;
+    font-size: 14px;
+  }
+
+  .submit-btn {
+    background-color: #0a3254;
+    border-color: #0a3254;
+    height: 48px;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 8px;
+
+    &:hover {
+      background-color: #0d4570;
+      border-color: #0d4570;
+    }
+  }
+
+  .right-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 20px;
+
+    .contact-info {
+      width: 100%;
+
+      .contact-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 16px;
+        gap: 12px;
+
+        .icon {
+          font-size: 20px;
+          min-width: 24px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .location-icon {
+          color: #52c41a;
+        }
+
+        .phone-icon {
+          color: #1890ff;
+        }
+
+        .email-icon {
+          color: #faad14;
+        }
+
+        .text {
+          font-size: 14px;
+          color: #333;
+          line-height: 1.5;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 20px;
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .row {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .col-form,
+    .col-info {
+      flex: 1 1 auto;
+      max-width: 100%;
+    }
+
+    .right-section {
+      margin-top: 30px;
+      padding: 10px;
+
+      .contact-info .contact-item {
+        margin-bottom: 12px;
+
+        .icon {
+          font-size: 18px;
+          min-width: 20px;
+        }
+
+        .text {
+          font-size: 13px;
+        }
+      }
+    }
+
+    .submit-btn {
+      height: 44px;
+      font-size: 14px;
+    }
+  }
+}

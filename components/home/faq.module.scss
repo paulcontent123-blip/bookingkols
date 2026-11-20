@@ -1,0 +1,100 @@
+.faq-container {
+  margin-left: -108px;
+  margin-right: -108px;
+  margin-bottom: 64px;
+  background: url('https://res.cloudinary.com/sqhqa17e/image/upload/bookingkol/site-assets/web/images/home-page/background-faq.svg') no-repeat
+    center/cover;
+  .faq-content {
+    padding-top: 100px;
+    width: 890px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .title {
+      background: linear-gradient(90deg, #ed3961 41%, #ffaa18 59%);
+      font-weight: 900;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-family: var(--font-roboto-bold);
+      width: 100%;
+      text-align: center;
+    }
+
+    .flex-item {
+      border-bottom: 1px solid var(--black);
+      padding: 16px 0;
+    }
+
+    .faq-item {
+      width: 100%;
+      display: flex;
+      gap: 16px;
+      cursor: pointer;
+      .index {
+        border-radius: 12px;
+        background-color: #2b2d36;
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+        p {
+          color: var(--white);
+          font-weight: 900;
+          margin: 0 !important;
+        }
+      }
+
+      .question-and-answer {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        flex-direction: column;
+        .question,
+        .answer {
+          padding: 16px 10px;
+        }
+        .question {
+          height: 48px;
+          display: flex;
+          align-items: center;
+
+          &.open {
+            border-radius: 12px;
+            background-color: #2b2d36;
+            color: var(--white);
+            font-weight: 900;
+            height: fit-content;
+          }
+        }
+
+        .answer {
+          border-radius: 12px;
+          border: 1px solid #2b2d36;
+        }
+      }
+    }
+  }
+}
+
+.faq-button {
+  margin-top: 20px;
+}
+
+@media screen and (max-width: 1248px) {
+  .faq-container {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .faq-container .faq-content {
+    width: 100%;
+  }
+}

@@ -1,0 +1,67 @@
+.campaigns-container {
+  padding: 40px 0;
+  min-height: 70vh;
+
+  .campaigns-header {
+    text-align: center;
+    margin-bottom: 48px;
+
+    h1 {
+      font-size: 36px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 16px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 32px;
+    }
+
+    .search-bar {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  }
+
+  .campaigns-content {
+    margin-top: 40px;
+  }
+
+  // Mobile responsive
+  @media (max-width: 768px) {
+    padding: 24px 0;
+
+    .campaigns-header {
+      margin-bottom: 32px;
+
+      h1 {
+        font-size: 28px;
+      }
+
+      .subtitle {
+        font-size: 14px;
+      }
+
+      .search-bar {
+        max-width: 100%;
+      }
+    }
+  }
+}
+
+// Lưới thẻ chiến dịch (nz-row/nz-col cũ): 1 cột trên điện thoại, 2 cột từ 576px, 4 cột từ 992px.
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+
+  @media (min-width: 576px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 992px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

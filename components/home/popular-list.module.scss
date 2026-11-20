@@ -1,0 +1,86 @@
+.popular-container {
+  background-color: #2b2d36;
+  padding-top: 90px;
+  margin-left: -108px;
+  margin-right: -108px;
+  border-bottom-left-radius: 60px;
+  border-bottom-right-radius: 60px;
+  position: relative;
+  .logo {
+    position: absolute;
+    top: -34px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--black);
+    border-radius: 50%;
+    padding: 12px;
+  }
+  .popular-list {
+    border-radius: 60px;
+    background-color: var(--black);
+    padding: 77px;
+    position: relative;
+    .filter {
+      width: 100%;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      margin-bottom: 60px;
+    }
+
+    .view-more {
+      position: absolute;
+      bottom: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+      a {
+        color: var(--white);
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1248px) {
+  .popular-container {
+    margin-left: -16px;
+    margin-right: -16px;
+  }
+  .popular-list {
+    padding: 77px 16px !important;
+  }
+}
+
+
+@media screen and (max-width: 576px) {
+  .popular-container h2 {
+    font-size: 16px;
+  }
+}
+
+.popular-list .bk-empty {
+  color: var(--white);
+}
+
+// Lưới KOL: 2 cột trên điện thoại, 4 cột từ 992px (thay cho nz-row/nz-col).
+.kol-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 32px;
+  row-gap: 60px;
+
+  @media (min-width: 992px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media (min-width: 1200px) {
+    column-gap: 60px;
+  }
+}
+
+.bk-empty {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 32px 0;
+}

@@ -1,0 +1,112 @@
+{
+  "role": {
+    "KOL": "KOL/KOC",
+    "AGENCY": "Agency/Brand"
+  },
+  "article_type": {
+    "kol": "KOL/KOC",
+    "agency": "Agency/Brand",
+    "project": "Dự án"
+  },
+  "menu": {
+    "home": "Trang chủ",
+    "news": "Tin tức",
+    "kol": "Danh sách KOL/KOC",
+    "service": "Dịch vụ",
+    "campaigns": "Chiến dịch đã triển khai",
+    "contact": "Liên hệ"
+  },
+  "field": {
+    "all": "Tất cả",
+    "fashion": "Thời trang",
+    "sport": "Thể thao",
+    "event": "Sự kiện",
+    "realEstate": "Bất động sản",
+    "health": "Sức khỏe",
+    "businessmen": "Doanh nhân",
+    "beauty": "Thẩm mỹ",
+    "travel": "Du lịch",
+    "cuisine": "Ẩm thực",
+    "tech": "Công nghệ",
+    "education": "Giáo dục",
+    "dentalClinic": "Nha khoa",
+    "streamingAndModel": "Livestream/Mẫu ảnh",
+    "other": "Khác"
+  },
+  "expertise_skill": {
+    "streamer": "Streamer",
+    "reviewer": "Reviewer",
+    "ambassador": "Đại sứ thương hiệu",
+    "modelLive": "Mẫu Live"
+  },
+  "booking_status": {
+    "new": "Tạo mới",
+    "cancelled": "Đã hủy",
+    "completed": "Hoàn thành"
+  },
+  "job_status": {
+    "available": "Còn trống",
+    "closed": "Đã đóng"
+  },
+  "button": {
+    "more": "Xem thêm"
+  },
+  "home_page": {
+    "popular_list": "Danh sách phổ biến",
+    "popular_tab": {
+      "kol": "KOL/KOC",
+      "cooperate_opportunity": "Cơ hội hợp tác"
+    },
+    "popular_kol": "Top KOL/KOC được Brand lựa chọn",
+    "popular_for_month": "Xếp hạng hoạt động trong tháng",
+    "exclusive_talent_title": "Talent độc quyền của BookingKOLs",
+    "popular_profile": {
+      "field": "Lĩnh vực"
+    },
+    "customer_review_title": "Đánh giá của khách hàng",
+    "faq_title": "Câu hỏi thường gặp",
+    "faq_question_1": "01. Các gói dịch vụ booking tại VEA Group",
+    "faq_answer_1": "VEA Group cung cấp đa dạng các gói dịch vụ cho Quý Đối tác, cụ thể:\n(i) Booking KOL/KOC hoặc Celeb/Model theo chỉ định: Áp dụng trong trường hợp nhãn hàng/Đối tác đã có sẵn danh sách cần tư vấn báo giá booking\n(ii) Booking KOL/KOC hoặc Celeb/Model với đề xuất từ chính VEA Group: Căn cứ trên nội dung (brief) booking của nhãn hàng/đối tác, chúng tôi sẽ cung cấp đến quý Đối tác danh sách các cá nhân phù hợp kèm báo giá\n(iii) Booking KOC freecast/minicast: Áp dụng cho các chiến dịch triển khai tiếp thị liên kết trên nền tảng TikTokShop và/hoặc Shopee, số lượng cố định từ 50 KOC/tháng trở lên.",
+    "faq_question_2": "02. KPIs chiến dịch khi booking KOL/KOC",
+    "faq_answer_2": "Với mọi chiến dịch triển khai, nhằm gia tăng hiệu quả đạt được bất kể mục tiêu branding/performance, VEA Group sẽ thông báo KPIs của chiến dịch để các quý Đối tác nắm bắt, trước khi tiến hành thực hiện ký kết Hợp đồng/Đơn đặt hàng (Có xuất hóa đơn VAT)",
+    "faq_question_3": "03. Ngoài KOL/KOC hoặc Celeb/Model, có các dịch vụ nào khác",
+    "faq_answer_3": "Chúng tôi có triển khai các hạng mục dịch vụ khác, bao gồm nhưng không giới hạn:\n(i) Dịch vụ booking các Fanpage & Social Group, các trang báo chí cũng như booking các vị trí, phương tiện quảng cáo ngoài trời (OOH)\n(ii) Dịch vụ tư vấn/thực thi vận hành thương mại điện tử cho nhãn hàng (quảng cáo; Livestream; vận hành gian hàng thương mại điện tử,...)\n(iii) Dịch vụ tư vấn/lập kế hoạch và triển khai các chiến dịch truyền thông tích hợp (IMC Campaign)"
+  },
+  "profile_card": {
+    "field": "Lĩnh vực",
+    "total_job": "Số job"
+  },
+  "footer": {
+    "contact_title": "Liên hệ",
+    "contact_description": "Kết nối với <strong>Booking KOLs</strong> để nhận được giải pháp hỗ trợ từ chiến dịch \"KOLs Marketing\" - giúp thương hiệu của bạn được lan tỏa rộng rãi nhờ sức ảnh hưởng của những cá nhân nổi tiếng. Booking KOLs - Hệ sinh thái kiến tạo toàn diện chiến dịch truyền thông & kinh doanh.",
+    "copyright": "Bản quyền thuộc về Booking KOLs",
+    "menu": {
+      "policy": "Chính sách chung",
+      "security": "Điều khoản bảo mật",
+      "about_us": "Về chúng tôi",
+      "privacy": "Quyền riêng tư"
+    }
+  },
+  "company_info": {
+    "name": "Công ty Cổ phần Thương mại - Đào tạo - Truyền thông HP",
+    "tax": "Mã số thuế: 0318157933",
+    "address": "Địa chỉ: 235 Nguyễn Thượng Hiền, Phường 6, Quận Bình Thạnh, TP. Hồ Chí Minh",
+    "phone": "Điện thoại: 0767.977.415",
+    "email": "Email: phongnguyen@veagroup.global"
+  },
+  "gender": {
+    "male": "Nam",
+    "female": "Nữ",
+    "other": "Khác",
+    "all": "Tất cả"
+  },
+  "notification": {
+    "agency_new_booking": "Booking của bạn cho KOL/KOC <strong>{{KOLName}}</strong> vừa được khởi tạo thành công.",
+    "kol_new_booking": "Agency  <strong>{{AgencyName}}</strong> vừa tạo 1 booking dành cho bạn.",
+    "register_user": "Chào mừng bạn đến với BookingKOLs. Vui lòng cập nhật hồ sơ để hoàn thành quá trình xét duyệt tài khoản."
+  },
+  "warning_incompatible": {
+    "title": "Cảnh báo",
+    "content": "Ứng dụng hiện tại chưa tương thích với thiết bị di động. Vui lòng sử dụng máy tính để truy cập ứng dụng mượt mà nhất."
+  }
+}

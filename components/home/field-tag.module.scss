@@ -1,0 +1,32 @@
+.tag {
+  display: inline-flex;
+  padding: 6px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 20px;
+  text-align: center;
+  &.default {
+    border: 1px solid var(--black);
+    color: var(--black);
+
+    &.active {
+      color: var(--white);
+      background-color: var(--black);
+      font-weight: 700;
+      font-style: italic;
+    }
+  }
+
+  &.primary {
+    border: 1px solid var(--white);
+    color: var(--white);
+
+    &.active {
+      color: var(--black);
+      background-color: var(--white);
+      font-weight: 700;
+      font-style: italic;
+    }
+  }
+}

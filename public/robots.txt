@@ -1,0 +1,62 @@
+# ============================================
+# robots.txt - bookingkols.com.vn
+# Cập nhật: 2026-04-09
+# ============================================
+
+User-agent: *
+
+# --- Trang không cần index ---
+Disallow: /login
+Disallow: /register
+Disallow: /search/
+Disallow: /feed
+Disallow: /trackback/
+
+# --- Trang quản trị và API: không cho lập chỉ mục ---
+Disallow: /admin
+Disallow: /api/
+
+# --- Query string spam ---
+Disallow: /*?s=
+Disallow: /*?s
+
+# --- Sitemap ---
+Sitemap: https://bookingkols.com.vn/sitemap.xml
+
+
+# ============================================
+# AI Bots - Block toàn bộ
+# ============================================
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: Omgilibot
+Disallow: /
+
+User-agent: Omgili
+Disallow: /
+
+User-agent: Diffbot
+Disallow: /
+
+User-agent: ImagesiftBot
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
+
+User-agent: 008
+Disallow: /

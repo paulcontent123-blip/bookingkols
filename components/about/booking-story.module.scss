@@ -1,0 +1,100 @@
+.booking-story {
+  padding: 60px 0px;
+  display: flex;
+  align-items: center;
+
+  .left-container {
+    img {
+      width: 90%;
+      height: 500px;
+      object-fit: cover;
+    }
+  }
+
+  .right-container {
+    padding: 40px 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .title {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      h6 {
+        text-align: center;
+        color: var(--pink);
+        font-family: var(--font-roboto-italic);
+        font-size: 20px;
+      }
+
+      .header-title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+          width: 32px;
+          height: 32px;
+          margin-right: 10px;
+        }
+
+        h2 {
+          font-size: 32px;
+        }
+
+        .story {
+          margin-left: 10px;
+          background-color: var(--black);
+          padding: 5px 10px;
+          border-radius: 10px;
+          border-left: 3px solid var(--pink);
+
+          h2 {
+            color: var(--neon-light);
+            font-size: 18px;
+          }
+        }
+      }
+    }
+
+    .description {
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      text-align: justify;
+      .row {
+        span {
+          font-weight: bold;
+          font-style: italic;
+        }
+      }
+    }
+  }
+}
+
+// Hai cột (nz-row/nz-col cũ): cạnh nhau từ 992px, khoảng cách tăng dần theo cỡ màn hình.
+.story-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 68px 8px;
+
+  @media (min-width: 576px) {
+    column-gap: 16px;
+  }
+
+  @media (min-width: 768px) {
+    column-gap: 24px;
+  }
+
+  @media (min-width: 992px) {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 32px;
+  }
+
+  @media (min-width: 1600px) {
+    column-gap: 68px;
+  }
+}

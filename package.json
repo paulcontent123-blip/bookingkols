@@ -1,0 +1,46 @@
+{
+  "name": "bookingkols",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BookingKols.vn - website, trang quản trị và API trong một ứng dụng Next.js 15 (Supabase)",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "check:db": "node --env-file=.env scripts/check-database.mjs",
+    "create:admin": "node --env-file=.env scripts/create-admin.mjs",
+    "import:old-db": "node --env-file=.env scripts/import-old-db.mjs",
+    "build:deploy": "next build && node scripts/prepare-deploy.mjs",
+    "start:standalone": "node .next/standalone/server.js",
+    "smoke": "node --env-file=.env scripts/smoke-test.mjs",
+    "migrate:avatars": "node --env-file=.env scripts/migrate-kol-avatars.mjs",
+    "db:migrate": "node --env-file=.env scripts/apply-schema.mjs",
+    "dev:preview": "node scripts/dev-preview.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.1",
+    "bcryptjs": "^2.4.3",
+    "cloudinary": "^2.6.0",
+    "jose": "^6.0.8",
+    "next": "^15.5.29",
+    "nodemailer": "^7.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "sanitize-html": "^2.14.0",
+    "sass": "^1.89.0",
+    "server-only": "^0.0.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^22.10.5",
+    "@types/nodemailer": "^6.4.17",
+    "@types/react": "^19.0.3",
+    "@types/react-dom": "^19.0.2",
+    "@types/sanitize-html": "^2.13.0",
+    "typescript": "^5.7.2",
+    "pg": "^8.13.1",
+    "@types/pg": "^8.11.10"
+  }
+}

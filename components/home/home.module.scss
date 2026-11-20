@@ -1,0 +1,30 @@
+.banner {
+  width: -webkit-fill-available;
+  margin-left: -108px;
+  margin-right: -108px;
+}
+
+.mobile {
+  display: none;
+}
+
+@media screen and (max-width: 1248px) {
+  .banner {
+    margin-left: -16px;
+    margin-right: -16px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .banner.mobile {
+    display: block;
+  }
+
+  .banner.desktop {
+    display: none;
+  }
+}
+
+.main-content {
+  margin-top: -32px;
+}

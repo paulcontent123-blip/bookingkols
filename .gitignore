@@ -1,0 +1,34 @@
+# ===== Thư viện và kết quả build =====
+node_modules/
+.next/
+.next-*/
+out/
+deploy/*.zip
+deploy/*.tar.gz
+
+# ===== Khoá bí mật: TUYỆT ĐỐI không đưa lên Git =====
+# Mọi file .env đều bị bỏ qua, chỉ giữ lại file mẫu .env.example
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ===== Supabase CLI: thư mục tạm (chứa mã project, token) =====
+supabase/.temp/
+supabase/.branches/
+
+# ===== File tạm, sao lưu, dữ liệu =====
+*.tsbuildinfo
+next-env.d.ts
+*.bak
+*.orig
+*.dump
+*.log
+.DS_Store
+Thumbs.db
+
+# ===== Cấu hình riêng của máy/trình soạn thảo =====
+.claude/
+.vscode/
+.idea/

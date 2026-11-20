@@ -1,0 +1,130 @@
+{
+  "role": {
+    "KOL": "KOL/KOC",
+    "AGENCY": "Agency/Brand"
+  },
+  "article_type": {
+    "kol": "KOL/KOC",
+    "agency": "Agency/Brand",
+    "project": "Project"
+  },
+  "menu": {
+    "home": "Home",
+    "news": "News",
+    "kol": "Our KOL/KOC",
+    "service": "Our Service",
+    "contact": "Contact"
+  },
+  "field": {
+    "all": "All",
+    "fashion": "Fashion",
+    "sport": "Sport",
+    "event": "Event",
+    "realEstate": "Real Estate",
+    "health": "Health",
+    "businessmen": "Businessmen",
+    "beauty": "Beauty",
+    "travel": "Travel",
+    "cuisine": "Cuisine",
+    "tech": "Technology",
+    "education": "Education",
+    "dentalClinic": "Dental Clinic",
+    "streamingAndModel": "Livestream/Model",
+    "other": "Other"
+  },
+  "expertise_skill": {
+    "streamer": "Streamer",
+    "reviewer": "Reviewer",
+    "ambassador": "Brand Ambassador",
+    "modelLive": "Model Live"
+  },
+  "account_control_menu": {
+    "job_management": "Recruitment",
+    "change_password": "Change password",
+    "setting_profile": "Setting Profile",
+    "logout": "Sign out",
+    "your_bookings": "Quản lý hoạt động"
+  },
+  "booking_status": {
+    "new": "New",
+    "cancelled": "Cancelled",
+    "completed": "Completed"
+  },
+  "job_status": {
+    "available": "Available",
+    "closed": "Closed"
+  },
+  "button": {
+    "sign_in": "Sign in",
+    "sign_up": "Sign up",
+    "more": "More"
+  },
+  "home_page": {
+    "popular_list": "Popular List",
+    "popular_tab": {
+      "kol": "KOL/KOC",
+      "cooperate_opportunity": "Cooperation Opportunities"
+    },
+    "popular_for_month": "Popularity ranking for the month",
+    "popular_kol": "Top KOL/KOC of the month",
+    "popular_agency": "Top Nominated Brands",
+    "popular_profile": {
+      "field": "Field"
+    },
+    "become_kol_title": "Want to become a KOL/KOC?",
+    "become_kol_content_1": "Do you have passion and special talents?",
+    "become_kol_content_2": "Do you want to amplify your influence and connect with the community in a unique way?",
+    "become_kol_content_3": "Connect and create unforgettable experiences for your community today.",
+    "register_now": "Register Now",
+    "customer_review_title": "Customer Reviews",
+    "exclusive_talent_title": "Exclusive Talent of BookingKOLs",
+    "faq_title": "Frequently Asked Questions",
+    "faq_question_1": "01. What fields does the Booking KOLs ecosystem support partners/customers in?",
+    "faq_answer_1": "The Booking KOLs ecosystem supports partners/business owners in the following fields: \n(i) Managing entire booking campaign operations, ranging from large to small scales, including Booking - KOLs/KOC Coordination - Strategic deployment advisory. \n(ii) Advising and providing e-commerce services in Vietnam & other countries worldwide (US/UK, etc.) for e-commerce platforms such as TikTokShop/Shopee.",
+    "faq_question_2": "02. Benefits of Cooperation with the Booking KOLs Ecosystem for Brands and Business Owners?",
+    "faq_answer_2": "Recognizing the challenges faced by brands and business owners, the Booking KOLs ecosystem provides three solutions to enhance efficiency in every KOLs/KOCs connection: \n(i) Access to a diverse list of suitable KOLs/KOCs nationwide and internationally, spanning various fields such as F&B, beauty, fashion, lifestyle, and entertainment. \n(ii) Management of collaboration mechanisms with KOLs/KOCs, ensuring mutual benefits with legal transparency to mitigate unnecessary risks. \n(iii) Comprehensive advice and guidance on campaign implementation, along with dedicated support throughout the cooperation process, offering detailed reporting data, effectiveness levels, and commitments made.",
+    "faq_question_3": "03. Why Collaborate with the Booking KOLs Ecosystem for KOLs/KOCs?",
+    "faq_answer_3": "Leveraging a vast and varied network of partners across different industries, the Booking KOLs ecosystem provides KOLs/KOCs with job opportunities and potential collaborations with major brands, focusing on three key areas: \n(i) Livestream & Stream-er; \n(ii) Brand Ambassador; \n(iii) Model & Reviewer & Affiliate.",
+    "faq_question_4": "04. Conditions & Benefits for Talent within the Booking KOLs Ecosystem?",
+    "faq_answer_4": "Individuals passionate about self-development in the fields of art, creativity, and business can register to become  talent KOLs/KOCs within the ecosystem. Upon approval, they enjoy four special benefits: \n(i) Priority in receiving job/collaboration opportunities from brands/partners. \n(ii) Comprehensive training in Digital E-commerce & Branding skills and knowledge. \n(iii) Support in building and developing communication channels upon meeting specific criteria. \n(iv) Access to the ecosystem's resources for personal development and improvement."
+  },
+  "profile_card": {
+    "field": "Field",
+    "total_job": "Total Jobs"
+  },
+  "footer": {
+    "contact_title": "Contact",
+    "contact_description": "Connect with <strong>Booking KOL</strong> to access support solutions through the \"KOLs Marketing\" campaign, amplifying your brand's reach through the influence of renowned individuals. Booking KOLs serves as an ecosystem, fostering the creation of comprehensive communication and business campaigns.",
+    "download_app": "Download App",
+    "scan_app": "Scan the app download code now",
+    "copyright": "Copyright belongs to Booking KOLs",
+    "menu": {
+      "policy": "Policy",
+      "security": "Security",
+      "about_us": "About Us",
+      "privacy": "Privacy"
+    }
+  },
+  "company_info": {
+    "name": "HP Joint Stock Company of Commerce, Training, and Communication",
+    "tax": "Tax ID: 0318157933",
+    "address": "Address: 235 Nguyen Thuong Hien, Ward 6, Binh Thanh District, Ho Chi Minh City",
+    "phone": "Phone: 0767.977.415",
+    "email": "Email: phongnguyen@bookingkols.com.vn"
+  },
+  "gender": {
+    "male": "Male",
+    "female": "Female",
+    "other": "Other",
+    "all": "All"
+  },
+  "notification": {
+    "agency_new_booking": "Your booking for KOL/KOC {{KOLName}} has been successfully initiated.",
+    "kol_new_booking": "Agency {{AgencyName}} has created 1 booking for you.",
+    "register_user": "Welcome to BookingKOLs. Please update your profile to complete the account approval process."
+  },
+  "warning_incompatible": {
+    "title": "Warning",
+    "content": "The current application is not compatible with mobile devices. Please use a computer for the best user experience."
+  }
+}
