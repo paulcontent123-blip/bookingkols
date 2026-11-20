@@ -28,7 +28,7 @@ export const POPULAR_KOLS: KolProfile[] = [
     name: 'Khoa Pug ',
     fields: ['travel', 'beauty'],
     province: 'Thành phố Hà Nội',
-    avatar: 'https://bookingkols.com.vn/images/736f3277-8008-4a5e-bb7a-8a75f2a3ee20-11.jpg',
+    avatar: cdnImage('assets/images/home-page/exclusive_koc4.png'),
     socialNetworkInfo: {
       facebookUrl: '',
       facebookFollowerCount: '',
@@ -66,7 +66,7 @@ export const POPULAR_KOLS: KolProfile[] = [
     name: ' Quan không gờ',
     fields: ['fashion', 'beauty'],
     province: 'Thành phố Hồ Chí Minh',
-    avatar: 'https://bookingkols.com.vn/images/1f95cb76-9dd7-4756-8c6c-7a9bbb991af0-io.jpg',
+    avatar: 'https://res.cloudinary.com/sqhqa17e/image/upload/f_auto,q_auto,c_limit,w_800/bookingkol/images/kol/quan-khong-go',
     socialNetworkInfo: {
       facebookUrl: '',
       facebookFollowerCount: null,
@@ -104,7 +104,7 @@ export const POPULAR_KOLS: KolProfile[] = [
     name: 'Ngọc Éng',
     fields: ['fashion', 'beauty', 'education'],
     province: 'Thành phố Hồ Chí Minh',
-    avatar: 'https://bookingkols.com.vn/images/a3751539-d21c-4d15-8ae2-713c30423d7a-avssav.jpg',
+    avatar: 'https://res.cloudinary.com/sqhqa17e/image/upload/f_auto,q_auto,c_limit,w_800/bookingkol/images/kol/ngoc-eng',
     socialNetworkInfo: {
       facebookUrl: null,
       facebookFollowerCount: null,
@@ -123,7 +123,7 @@ export const POPULAR_KOLS: KolProfile[] = [
     name: 'Ẩm Thực Mẹ Làm',
     fields: ['cuisine'],
     province: 'Tỉnh Thái Nguyên',
-    avatar: 'https://bookingkols.com.vn/images/0e49ff2a-8556-430c-ac19-41c61583f708-2.jpg',
+    avatar: 'https://res.cloudinary.com/sqhqa17e/image/upload/f_auto,q_auto,c_limit,w_800/bookingkol/images/kol/am-thuc-me-lam',
     socialNetworkInfo: {
       facebookUrl: 'https://www.facebook.com/AmThucMeLam.Official',
       facebookFollowerCount: '',
@@ -143,7 +143,7 @@ export const POPULAR_KOLS: KolProfile[] = [
     fields: ['cuisine', 'travel', 'fashion'],
     province: 'Thành phố Hồ Chí Minh',
     avatar:
-      'https://bookingkols.com.vn/images/d87a835a-5c67-4b83-890b-b17d36f17564-405322816_122140236110029005_5851156927071506520_n.jpg 1.jpg',
+      'https://res.cloudinary.com/sqhqa17e/image/upload/f_auto,q_auto,c_limit,w_800/bookingkol/images/kol/gia-dinh-tihi',
     socialNetworkInfo: {
       facebookUrl: '',
       facebookFollowerCount: '',
@@ -162,7 +162,7 @@ export const POPULAR_KOLS: KolProfile[] = [
     name: 'tasee_tasee',
     fields: ['beauty', 'other'],
     province: 'Thành phố Hồ Chí Minh',
-    avatar: 'https://bookingkols.com.vn/images/68af1b11-5861-41d5-90cc-73134b6916d1-1.jpg',
+    avatar: 'https://res.cloudinary.com/sqhqa17e/image/upload/f_auto,q_auto,c_limit,w_800/bookingkol/images/kol/tasee-tasee',
     socialNetworkInfo: {
       facebookUrl: '',
       facebookFollowerCount: '',
@@ -208,7 +208,7 @@ export const TOP_PROFILES: TopProfile[] = [
       province: 'Thành phố Hà Nội',
       role: 'KOL',
       avatar:
-        'https://bookingkols.com.vn/images/736f3277-8008-4a5e-bb7a-8a75f2a3ee20-11.jpg',
+        cdnImage('assets/images/home-page/exclusive_koc4.png'),
       totalJob: 0,
     },
     {
@@ -219,7 +219,7 @@ export const TOP_PROFILES: TopProfile[] = [
       province: 'Thành phố Hồ Chí Minh',
       role: 'KOL',
       avatar:
-        'https://bookingkols.com.vn/images/1f95cb76-9dd7-4756-8c6c-7a9bbb991af0-io.jpg',
+        'https://res.cloudinary.com/sqhqa17e/image/upload/f_auto,q_auto,c_limit,w_800/bookingkol/images/kol/quan-khong-go',
       totalJob: 0,
     },
   ];
