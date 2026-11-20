@@ -14,14 +14,17 @@
   .profile-info {
     border-radius: 12px;
     position: absolute;
-    height: 424px;
+    // Ảnh nằm gọn trong thẻ (chừa 8px bên phải/dưới để lộ viền gradient), không tràn ra ngoài khung.
+    top: 0;
+    left: 0;
     right: 8px;
     bottom: 8px;
-    width: 100%;
     img.avatar {
+      display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center top;
       border-radius: 12px;
     }
 

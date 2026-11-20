@@ -3,11 +3,11 @@
 import { useI18n } from '@/components/I18nProvider';
 import { Empty } from '@/components/ui/Empty';
 import { cdnImage } from '@/lib/cdn';
-import { POPULAR_KOLS } from '@/lib/home-data';
+import type { KolProfile } from '@/lib/home-data';
 import { KolProfileCard } from './KolProfileCard';
 import s from './popular-list.module.scss';
 
-export function PopularList() {
+export function PopularList({ kols }: { kols: KolProfile[] }) {
   const { t } = useI18n();
   return (
     <div className={s['popular-container']}>
@@ -18,8 +18,8 @@ export function PopularList() {
       <div className={s['popular-list']}>
         <h2 className={s['section-title']}>{t('home_page.kol_cooperation_list')}</h2>
         <div className={s['kol-grid']}>
-          {POPULAR_KOLS.length === 0 && <Empty className={s['bk-empty']} />}
-          {POPULAR_KOLS.map((item) => (
+          {kols.length === 0 && <Empty className={s['bk-empty']} />}
+          {kols.map((item) => (
             <KolProfileCard key={item.slug} profile={item} />
           ))}
         </div>

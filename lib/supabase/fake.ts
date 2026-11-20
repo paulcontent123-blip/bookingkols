@@ -18,7 +18,7 @@ interface Result {
 
 // Lưu trên globalThis: chế độ dev của Next có thể nạp module nhiều lần (mỗi route một bản).
 const g = globalThis as unknown as { __bookingkolsFakeDb?: Record<string, Row[]> };
-const tables: Record<string, Row[]> = (g.__bookingkolsFakeDb ??= { users: [], articles: [], seo_html_contents: [], contact_requests: [] });
+const tables: Record<string, Row[]> = (g.__bookingkolsFakeDb ??= { users: [], articles: [], seo_html_contents: [], contact_requests: [], kols: [] });
 
 // Có thể gieo sẵn một tài khoản quản trị để thử đăng nhập (FAKE_ADMIN_EMAIL / FAKE_ADMIN_PASSWORD).
 if (process.env.FAKE_ADMIN_EMAIL && process.env.FAKE_ADMIN_PASSWORD && tables.users.length === 0) {
@@ -36,7 +36,8 @@ if (process.env.FAKE_ADMIN_EMAIL && process.env.FAKE_ADMIN_PASSWORD && tables.us
 const uniques: Record<string, (row: Row) => string | null> = {
   users: (r) => String(r.email ?? '').toLowerCase(),
   articles: (r) => String(r.slug ?? ''),
-  seo_html_contents: (r) => String(r.url ?? '')
+  seo_html_contents: (r) => String(r.url ?? ''),
+  kols: (r) => String(r.slug ?? '')
 };
 
 const get = (row: Row, path: string): unknown => {

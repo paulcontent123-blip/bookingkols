@@ -11,6 +11,7 @@ import s from './admin.module.scss';
 const MENU = [
   { url: '/admin/user-management', title: 'Quản lý User' },
   { url: '/admin/news-management', title: 'Quản lý Tin tức' },
+  { url: '/admin/kol-management', title: 'Quản lý KOL' },
   { url: '/admin/contact-management', title: 'Quản lý Liên hệ' },
   { url: '/admin/seo-config-management', title: 'Quản lý config SEO' }
 ];
