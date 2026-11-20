@@ -70,7 +70,8 @@ export async function pageMetadata(opts: { path: string; title?: string; default
   const url = `${config.appUrl}${path || '/'}`;
   md.alternates = {
     canonical: url,
-    languages: { vi: url, en: `${url}?lang=en`, 'x-default': url }
+    // URL đã có query (?page=2) thì nối bằng & để không ra dạng sai "?page=2?lang=en".
+    languages: { vi: url, en: `${url}${url.includes('?') ? '&' : '?'}lang=en`, 'x-default': url }
   };
   if (md.openGraph && !md.openGraph.url) (md.openGraph as { url?: string }).url = url;
   return md;

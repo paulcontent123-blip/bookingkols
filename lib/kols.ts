@@ -14,6 +14,9 @@ const COLUMNS =
   'id, slug, name, nickname, avatar, province, fields, tiktok_url, tiktok_followers, facebook_url, facebook_followers, youtube_url, youtube_followers, instagram_url, instagram_followers, sort_order, is_published, created_at';
 const ADMIN_COLUMNS = `${COLUMNS}, is_featured`;
 
+/** Số KOL mỗi trang ở trang chủ: 8 = 2 hàng × 4 cột. */
+export const KOL_PAGE_SIZE = 8;
+
 interface KolRow {
   id: string;
   slug: string;
@@ -119,19 +122,36 @@ function toProfile(r: KolRow): KolProfile {
  * Chỉ khi không đọc được database (ví dụ chưa chạy migration bảng kols) mới dùng danh sách dự phòng gõ cứng,
  * để trang chủ không bị trống; danh sách rỗng hợp lệ (đã ẩn/xoá hết) thì giữ nguyên là rỗng.
  */
-export async function listPublishedKols(): Promise<KolProfile[]> {
-  try {
-    const { data, error } = await getSupabase()
+export async function listPublishedKols(params: { pageIndex?: number; pageSize?: number } = {}): Promise<Paged<KolProfile>> {
+  const { pageIndex, pageSize } = clampPaging(params.pageIndex, params.pageSize ?? KOL_PAGE_SIZE, KOL_PAGE_SIZE);
+  const fetchPage = async (page: number) => {
+    const { data, count, error } = await getSupabase()
       .from('kols')
-      .select(COLUMNS)
+      .select(COLUMNS, { count: 'exact' })
       .eq('is_published', true)
       .order('sort_order', { ascending: true })
-      .order('created_at', { ascending: true });
+      .order('created_at', { ascending: true })
+      .range((page - 1) * pageSize, page * pageSize - 1);
     if (error) throw error;
-    return (data as KolRow[]).map(toProfile);
+    return { rows: data as KolRow[], total: count ?? 0 };
+  };
+  try {
+    let page = pageIndex;
+    let { rows, total } = await fetchPage(page);
+    // Trang yêu cầu vượt quá số trang hiện có (ví dụ vừa xoá/ẩn bớt KOL): lấy trang cuối thay vì hiện trống.
+    if (rows.length === 0 && total > 0 && page > 1) {
+      page = Math.ceil(total / pageSize);
+      ({ rows, total } = await fetchPage(page));
+    }
+    return { items: rows.map(toProfile), totalCount: total, pageIndex: page, pageSize };
   } catch (error) {
     console.error('[kols] Không đọc được bảng kols, dùng danh sách dự phòng:', error);
-    return POPULAR_KOLS;
+    return {
+      items: POPULAR_KOLS.slice((pageIndex - 1) * pageSize, pageIndex * pageSize),
+      totalCount: POPULAR_KOLS.length,
+      pageIndex,
+      pageSize
+    };
   }
 }
 

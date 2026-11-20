@@ -15,12 +15,28 @@ function pageList(current: number, last: number): (number | 'dots-l' | 'dots-r')
 }
 
 /** Phân trang bằng liên kết thật (?page=N) để Google đọc được các trang sau. */
-export function Pagination({ pageIndex, pageSize, total, basePath }: { pageIndex: number; pageSize: number; total: number; basePath: string }) {
+export function Pagination({
+  pageIndex,
+  pageSize,
+  total,
+  basePath,
+  hash,
+  dark = false
+}: {
+  pageIndex: number;
+  pageSize: number;
+  total: number;
+  basePath: string;
+  /** Neo trong trang (không có dấu #) để đổi trang xong vẫn dừng ở đúng khu vực, không nhảy lên đầu trang. */
+  hash?: string;
+  /** Dùng trên nền tối. */
+  dark?: boolean;
+}) {
   const last = Math.max(1, Math.ceil(total / pageSize));
   if (last <= 1) return null;
-  const href = (page: number) => (page === 1 ? basePath : `${basePath}?page=${page}`);
+  const href = (page: number) => `${page === 1 ? basePath : `${basePath}?page=${page}`}${hash ? `#${hash}` : ''}`;
   return (
-    <nav className={s.pagination} aria-label="Phân trang">
+    <nav className={`${s.pagination} ${dark ? s.dark : ''}`} aria-label="Phân trang">
       {pageList(pageIndex, last).map((p) =>
         typeof p === 'number' ? (
           <Link key={p} href={href(p)} className={`${s['pagination-item']} ${p === pageIndex ? s.active : ''}`} aria-current={p === pageIndex ? 'page' : undefined}>

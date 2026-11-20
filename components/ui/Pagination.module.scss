@@ -30,3 +30,19 @@
   background: radial-gradient(316.92% 82.99% at 160.52% 58.05%, #ffce46 0%, #ffcc74 22.9%, #ff8ca6 85.49%);
   font-weight: 700;
 }
+
+// Nền tối (khu vực KOL ở trang chủ): viền và số màu trắng, trang hiện tại giữ nền gradient chữ đen.
+.dark {
+  .pagination-item {
+    border-color: var(--white);
+    color: var(--white);
+
+    &.active {
+      color: var(--black);
+    }
+  }
+
+  .dots {
+    color: var(--white-alpha-60, rgba(255, 255, 255, 0.6));
+  }
+}

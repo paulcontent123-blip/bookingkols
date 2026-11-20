@@ -84,3 +84,12 @@
   gap: 8px;
   padding: 32px 0;
 }
+
+// Phân trang danh sách KOL: nằm dưới lưới; "Xem thêm" nằm trong phần đệm phía dưới nên không bị che.
+.pager {
+  margin-top: 48px;
+}
+
+.popular-container .popular-list {
+  scroll-margin-top: 100px; // chừa chỗ cho thanh menu cố định khi nhảy tới #kol-list
+}
