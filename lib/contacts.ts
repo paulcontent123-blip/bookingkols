@@ -4,6 +4,7 @@ import { getSupabase } from './supabase/server';
 import { ApiError } from './errors';
 import { sendContactEmail } from './mail';
 import { clampPaging, safeKeyword, type Paged } from './articles';
+import { TABLES } from './db-tables';
 
 const MAX_PER_PHONE_PER_HOUR = 5;
 const MAX_PER_HOUR = 100;
@@ -34,7 +35,7 @@ export async function submitContact(input: unknown): Promise<void> {
 
   // Cùng số điện thoại + cùng nội dung trong 10 phút là gửi lặp (bấm nhiều lần): coi như đã nhận.
   const duplicate = await db
-    .from('contact_requests')
+    .from(TABLES.contacts)
     .select('id', { count: 'exact', head: true })
     .eq('phone', body.phone)
     .eq('message', body.message)
@@ -44,15 +45,15 @@ export async function submitContact(input: unknown): Promise<void> {
   // Giới hạn chống dội thư rác, không phụ thuộc địa chỉ IP: mỗi số điện thoại 5 lần/giờ, toàn website 100 lần/giờ.
   const since = new Date(now - 60 * 60 * 1000).toISOString();
   const [perPhone, total] = await Promise.all([
-    db.from('contact_requests').select('id', { count: 'exact', head: true }).eq('phone', body.phone).gt('created_at', since),
-    db.from('contact_requests').select('id', { count: 'exact', head: true }).gt('created_at', since)
+    db.from(TABLES.contacts).select('id', { count: 'exact', head: true }).eq('phone', body.phone).gt('created_at', since),
+    db.from(TABLES.contacts).select('id', { count: 'exact', head: true }).gt('created_at', since)
   ]);
   if ((perPhone.count ?? 0) >= MAX_PER_PHONE_PER_HOUR || (total.count ?? 0) >= MAX_PER_HOUR) {
     throw new ApiError(429, 'Bạn gửi quá nhiều yêu cầu, vui lòng thử lại sau');
   }
 
   // Lưu database trước để không mất thông tin khách kể cả khi gửi email lỗi.
-  const { error } = await db.from('contact_requests').insert({
+  const { error } = await db.from(TABLES.contacts).insert({
     name: body.name,
     phone: body.phone,
     email: body.email ? body.email : null,
@@ -87,7 +88,7 @@ export async function listContacts(params: {
   const { pageIndex, pageSize } = clampPaging(params.pageIndex, params.pageSize);
   const keyword = safeKeyword(params.keyword);
   let query = getSupabase()
-    .from('contact_requests')
+    .from(TABLES.contacts)
     .select('id, name, phone, email, message, is_processed, created_at', { count: 'exact' });
   if (keyword) query = query.or(`name.ilike.%${keyword}%,phone.ilike.%${keyword}%,email.ilike.%${keyword}%`);
   if (typeof params.isProcessed === 'boolean') query = query.eq('is_processed', params.isProcessed);
@@ -113,7 +114,7 @@ export async function listContacts(params: {
 
 export async function setContactProcessed(id: string, isProcessed: boolean): Promise<void> {
   const { data, error } = await getSupabase()
-    .from('contact_requests')
+    .from(TABLES.contacts)
     .update({ is_processed: isProcessed })
     .eq('id', id)
     .select('id');
@@ -122,7 +123,7 @@ export async function setContactProcessed(id: string, isProcessed: boolean): Pro
 }
 
 export async function deleteContact(id: string): Promise<void> {
-  const { data, error } = await getSupabase().from('contact_requests').delete().eq('id', id).select('id');
+  const { data, error } = await getSupabase().from(TABLES.contacts).delete().eq('id', id).select('id');
   if (error) throw error;
   if (!data?.length) throw new ApiError(404, 'Không tìm thấy yêu cầu liên hệ');
 }

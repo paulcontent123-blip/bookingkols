@@ -9,7 +9,7 @@ if (!url || !key || url.includes('your-project') || key.includes('your-supabase'
 }
 
 const db = createClient(url, key, { auth: { persistSession: false } });
-const tables = ['users', 'articles', 'seo_html_contents', 'contact_requests'];
+const tables = ['bk_users', 'bk_articles', 'bk_seo_html_contents', 'bk_contact_requests', 'bk_kols'];
 let failed = false;
 
 for (const table of tables) {
@@ -19,7 +19,7 @@ for (const table of tables) {
   if (error) {
     failed = true;
     const missing = error.code === '42P01' || error.code === 'PGRST205' || /does not exist|schema cache/i.test(error.message);
-    console.log(`  LỖI  ${table}: ${missing ? 'chưa có bảng (chạy supabase/migrations/20261118000100_initial_schema.sql trong SQL Editor)' : error.message}`);
+    console.log(`  LỖI  ${table}: ${missing ? 'chưa có bảng (chạy supabase/migrations/20261125000100_bookingkols_schema.sql trong SQL Editor hoặc npm run db:migrate)' : error.message}`);
   } else {
     console.log(`  OK   ${table}: ${count} dòng`);
   }

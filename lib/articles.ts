@@ -6,6 +6,7 @@ import { canonicalArticleSlug, normalizeSlug } from './slug';
 import { imageUrl } from './cloudinary';
 import { cleanHtml } from './sanitize';
 import { collectImagePaths, deleteImages, normalizePublicImageUrls, prepareContentForSave } from './rich-html';
+import { TABLES } from './db-tables';
 
 export const ARTICLE_TYPES = ['kol', 'agency', 'project'] as const;
 export const ARTICLE_STATUSES = ['published', 'draft'] as const;
@@ -49,7 +50,7 @@ interface ArticleRow {
   author?: { name: string; slug: string; email: string } | null;
 }
 
-const SELECT = 'id, title, thumbnail, slug, description, content, type, status, created_at, updated_at, author:users(name, slug, email)';
+const SELECT = 'id, title, thumbnail, slug, description, content, type, status, created_at, updated_at, author:' + TABLES.users + '(name, slug, email)';
 
 function toArticle(row: ArticleRow, opts: { admin?: boolean; withContent?: boolean } = {}): Article {
   return {
@@ -92,7 +93,7 @@ async function findIdBySlug(slug: string, onlyPublished: boolean): Promise<strin
   if (!slug || !slug.trim()) return null;
   const db = getSupabase();
   const base = () => {
-    const q = db.from('articles').select('id');
+    const q = db.from(TABLES.articles).select('id');
     return onlyPublished ? q.eq('status', 'published') : q;
   };
 
@@ -107,14 +108,14 @@ async function findIdBySlug(slug: string, onlyPublished: boolean): Promise<strin
   }
 
   const rows = await (onlyPublished
-    ? db.from('articles').select('id, slug, title').eq('status', 'published')
-    : db.from('articles').select('id, slug, title'));
+    ? db.from(TABLES.articles).select('id, slug, title').eq('status', 'published')
+    : db.from(TABLES.articles).select('id, slug, title'));
   const found = (rows.data ?? []).find((r) => canonicalArticleSlug(r.slug, r.title) === normalized);
   return found?.id ?? null;
 }
 
 async function getById(id: string, admin = false): Promise<Article | null> {
-  const { data, error } = await getSupabase().from('articles').select(SELECT).eq('id', id).maybeSingle();
+  const { data, error } = await getSupabase().from(TABLES.articles).select(SELECT).eq('id', id).maybeSingle();
   if (error) throw error;
   return data ? toArticle(data as unknown as ArticleRow, { admin }) : null;
 }
@@ -128,7 +129,7 @@ export async function listPublishedArticles(params: {
 }): Promise<Paged<Article>> {
   const { pageIndex, pageSize } = clampPaging(params.pageIndex, params.pageSize);
   let query = getSupabase()
-    .from('articles')
+    .from(TABLES.articles)
     .select(SELECT, { count: 'exact' })
     .eq('status', 'published');
   if (params.isProject) query = query.eq('type', 'project');
@@ -152,10 +153,10 @@ export async function getPublishedArticle(slug: string): Promise<Article | null>
 export async function getRelatedArticles(slug: string): Promise<Article[]> {
   const id = await findIdBySlug(slug, false);
   if (!id) return [];
-  const current = await getSupabase().from('articles').select('id, type').eq('id', id).maybeSingle();
+  const current = await getSupabase().from(TABLES.articles).select('id, type').eq('id', id).maybeSingle();
   if (!current.data) return [];
   const { data, error } = await getSupabase()
-    .from('articles')
+    .from(TABLES.articles)
     .select(SELECT)
     .eq('status', 'published')
     .eq('type', current.data.type)
@@ -169,7 +170,7 @@ export async function getRelatedArticles(slug: string): Promise<Article[]> {
 /** Dùng cho sitemap: slug và ngày cập nhật của mọi bài đã xuất bản. */
 export async function listPublishedForSitemap(): Promise<{ slug: string; lastUpdatedAt: string }[]> {
   const { data, error } = await getSupabase()
-    .from('articles')
+    .from(TABLES.articles)
     .select('slug, title, updated_at')
     .eq('status', 'published')
     .order('updated_at', { ascending: false })
@@ -191,8 +192,8 @@ export async function listArticlesAdmin(params: {
   const { pageIndex, pageSize } = clampPaging(params.pageIndex, params.pageSize);
   const author = safeKeyword(params.author);
   const title = safeKeyword(params.title);
-  const select = author ? SELECT.replace('author:users(', 'author:users!inner(') : SELECT;
-  let query = getSupabase().from('articles').select(select, { count: 'exact' });
+  const select = author ? SELECT.replace(`author:${TABLES.users}(`, `author:${TABLES.users}!inner(`) : SELECT;
+  let query = getSupabase().from(TABLES.articles).select(select, { count: 'exact' });
   if (params.status && (ARTICLE_STATUSES as readonly string[]).includes(params.status)) query = query.eq('status', params.status);
   if (params.type && (ARTICLE_TYPES as readonly string[]).includes(params.type)) query = query.eq('type', params.type);
   if (title) query = query.ilike('title', `%${title}%`);
@@ -235,7 +236,7 @@ function parseBody(input: unknown) {
 }
 
 async function assertSlugAvailable(slug: string, exceptId?: string) {
-  const { data, error } = await getSupabase().from('articles').select('id').eq('slug', slug).limit(1).maybeSingle();
+  const { data, error } = await getSupabase().from(TABLES.articles).select('id').eq('slug', slug).limit(1).maybeSingle();
   if (error) throw error;
   if (data && data.id !== exceptId) throw new ApiError(400, 'Đường dẫn đã tồn tại, hãy dùng đường dẫn khác', 'slug');
 }
@@ -247,7 +248,7 @@ export async function createArticle(input: unknown, authorId: string): Promise<A
   await assertSlugAvailable(slug);
   const content = await prepareContentForSave(body.content, body.title);
   const { data, error } = await getSupabase()
-    .from('articles')
+    .from(TABLES.articles)
     .insert({
       title: body.title,
       description: body.description,
@@ -273,7 +274,7 @@ export async function updateArticle(currentSlug: string, input: unknown): Promis
   await assertSlugAvailable(slug, id);
   const content = await prepareContentForSave(body.content, body.title);
   const { error } = await getSupabase()
-    .from('articles')
+    .from(TABLES.articles)
     .update({
       title: body.title,
       description: body.description,
@@ -292,9 +293,9 @@ export async function deleteArticle(slug: string): Promise<void> {
   const id = await findIdBySlug(slug, false);
   if (!id) throw new ApiError(404, 'Bài viết không tồn tại', 'article');
   const db = getSupabase();
-  const { data } = await db.from('articles').select('thumbnail, content').eq('id', id).maybeSingle();
+  const { data } = await db.from(TABLES.articles).select('thumbnail, content').eq('id', id).maybeSingle();
   // Xoá bài trước; dọn ảnh trên Cloudinary chỉ là phụ, lỗi Cloudinary không được làm hỏng việc xoá bài.
-  const { error } = await db.from('articles').delete().eq('id', id);
+  const { error } = await db.from(TABLES.articles).delete().eq('id', id);
   if (error) throw error;
   if (data) await deleteImages(collectImagePaths(data.thumbnail, data.content));
 }

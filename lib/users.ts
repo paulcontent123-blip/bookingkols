@@ -5,6 +5,7 @@ import { ApiError } from './errors';
 import { hashPassword, verifyPassword } from './auth';
 import { generateUserSlug } from './slug';
 import { clampPaging, safeKeyword, type Paged } from './articles';
+import { TABLES } from './db-tables';
 
 export interface UserItem {
   id: string;
@@ -18,7 +19,7 @@ export async function listUsers(params: { name?: string; email?: string; pageInd
   const { pageIndex, pageSize } = clampPaging(params.pageIndex, params.pageSize);
   const name = safeKeyword(params.name);
   const email = safeKeyword(params.email);
-  let query = getSupabase().from('users').select('id, email, name, slug, created_at', { count: 'exact' });
+  let query = getSupabase().from(TABLES.users).select('id, email, name, slug, created_at', { count: 'exact' });
   if (name) query = query.ilike('name', `%${name}%`);
   if (email) query = query.ilike('email', `%${email}%`);
   const { data, count, error } = await query
@@ -48,9 +49,9 @@ export async function createAdmin(input: unknown): Promise<void> {
   const body = parsed.data;
   const email = body.email.toLowerCase();
   const db = getSupabase();
-  const exists = await db.from('users').select('id').ilike('email', email).limit(1).maybeSingle();
+  const exists = await db.from(TABLES.users).select('id').ilike('email', email).limit(1).maybeSingle();
   if (exists.data) throw new ApiError(400, 'Email đã tồn tại', 'email');
-  const { error } = await db.from('users').insert({
+  const { error } = await db.from(TABLES.users).insert({
     email,
     name: body.name,
     password: await hashPassword(body.password),
@@ -72,13 +73,13 @@ export async function changePassword(userId: string, input: unknown): Promise<{ 
     throw new ApiError(400, issue.message, String(issue.path[0] ?? ''));
   }
   const db = getSupabase();
-  const { data: user } = await db.from('users').select('id, password').eq('id', userId).maybeSingle();
+  const { data: user } = await db.from(TABLES.users).select('id, password').eq('id', userId).maybeSingle();
   if (!user) throw new ApiError(401, 'Tài khoản không tồn tại');
   if (!(await verifyPassword(parsed.data.oldPassword, user.password))) {
     throw new ApiError(400, 'Mật khẩu cũ không đúng', 'oldPassword');
   }
   const password = await hashPassword(parsed.data.newPassword);
-  const { error } = await db.from('users').update({ password }).eq('id', userId);
+  const { error } = await db.from(TABLES.users).update({ password }).eq('id', userId);
   if (error) throw error;
   return { id: userId, password };
 }

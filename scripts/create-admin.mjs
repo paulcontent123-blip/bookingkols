@@ -24,19 +24,19 @@ const db = createClient(url, key, { auth: { persistSession: false } });
 const normalized = email.trim().toLowerCase();
 const hash = await bcrypt.hash(password, 10);
 
-const { data: existing, error: findError } = await db.from('users').select('id').ilike('email', normalized).maybeSingle();
+const { data: existing, error: findError } = await db.from('bk_users').select('id').ilike('email', normalized).maybeSingle();
 if (findError) {
-  console.error('Không đọc được bảng users:', findError.message);
+  console.error('Không đọc được bảng bk_users:', findError.message);
   process.exit(1);
 }
 
 if (existing) {
-  const { error } = await db.from('users').update({ password: hash, name }).eq('id', existing.id);
+  const { error } = await db.from('bk_users').update({ password: hash, name }).eq('id', existing.id);
   if (error) throw error;
   console.log(`Đã đặt lại mật khẩu cho ${normalized}.`);
 } else {
   const slug = `${removeDiacritics(name).replace(/[^\w-]+/g, '-').toLowerCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
-  const { error } = await db.from('users').insert({ email: normalized, name, password: hash, slug });
+  const { error } = await db.from('bk_users').insert({ email: normalized, name, password: hash, slug });
   if (error) throw error;
   console.log(`Đã tạo tài khoản quản trị ${normalized}.`);
 }

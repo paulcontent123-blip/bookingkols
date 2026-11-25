@@ -3,6 +3,7 @@ import { config } from './config';
 import { getSupabase } from './supabase/server';
 import { canonicalArticleSlug } from './slug';
 import { imageUrl } from './cloudinary';
+import { TABLES } from './db-tables';
 
 /**
  * Sitemap tự động (giống website cũ):
@@ -32,7 +33,7 @@ const escapeXml = (value: string) =>
 
 async function fetchArticles(): Promise<SitemapArticle[]> {
   const { data, error } = await getSupabase()
-    .from('articles')
+    .from(TABLES.articles)
     .select('slug, title, thumbnail, updated_at')
     .eq('status', 'published')
     .order('updated_at', { ascending: false })

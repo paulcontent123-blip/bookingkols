@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { getSupabase } from './supabase/server';
 import { ApiError } from './errors';
 import { clampPaging, safeKeyword, type Paged } from './articles';
+import { TABLES } from './db-tables';
 
 export interface SeoHtmlItem {
   id: string;
@@ -31,7 +32,7 @@ export function isValidMetaHtml(html: string): boolean {
 export async function getSeoHtmlByUrl(url: string): Promise<string | null> {
   try {
     const { data } = await getSupabase()
-      .from('seo_html_contents')
+      .from(TABLES.seoHtml)
       .select('html_content')
       .eq('url', normalizeSeoUrl(url))
       .maybeSingle();
@@ -44,7 +45,7 @@ export async function getSeoHtmlByUrl(url: string): Promise<string | null> {
 export async function listSeoHtml(params: { url?: string; pageIndex?: number; pageSize?: number }): Promise<Paged<SeoHtmlItem>> {
   const { pageIndex, pageSize } = clampPaging(params.pageIndex, params.pageSize);
   const url = safeKeyword(params.url);
-  let query = getSupabase().from('seo_html_contents').select('id, url, html_content, created_at', { count: 'exact' });
+  let query = getSupabase().from(TABLES.seoHtml).select('id, url, html_content, created_at', { count: 'exact' });
   if (url) query = query.ilike('url', `%${url}%`);
   const { data, count, error } = await query
     .order('created_at', { ascending: false })
@@ -75,29 +76,29 @@ function parse(input: unknown) {
 export async function createSeoHtml(input: unknown): Promise<void> {
   const row = parse(input);
   const db = getSupabase();
-  const exists = await db.from('seo_html_contents').select('id').eq('url', row.url).limit(1).maybeSingle();
+  const exists = await db.from(TABLES.seoHtml).select('id').eq('url', row.url).limit(1).maybeSingle();
   if (exists.data) throw new ApiError(400, 'Đã có cấu hình SEO cho địa chỉ này', 'url');
-  const { error } = await db.from('seo_html_contents').insert(row);
+  const { error } = await db.from(TABLES.seoHtml).insert(row);
   if (error) throw error;
 }
 
 export async function getSeoHtmlById(id: string): Promise<SeoHtmlItem | null> {
-  const { data } = await getSupabase().from('seo_html_contents').select('id, url, html_content, created_at').eq('id', id).maybeSingle();
+  const { data } = await getSupabase().from(TABLES.seoHtml).select('id, url, html_content, created_at').eq('id', id).maybeSingle();
   return data ? { id: data.id, url: data.url, htmlContent: data.html_content, createdAt: data.created_at } : null;
 }
 
 export async function updateSeoHtml(id: string, input: unknown): Promise<void> {
   const row = parse(input);
   const db = getSupabase();
-  const clash = await db.from('seo_html_contents').select('id').eq('url', row.url).neq('id', id).limit(1).maybeSingle();
+  const clash = await db.from(TABLES.seoHtml).select('id').eq('url', row.url).neq('id', id).limit(1).maybeSingle();
   if (clash.data) throw new ApiError(400, 'Đã có cấu hình SEO cho địa chỉ này', 'url');
-  const { data, error } = await db.from('seo_html_contents').update(row).eq('id', id).select('id');
+  const { data, error } = await db.from(TABLES.seoHtml).update(row).eq('id', id).select('id');
   if (error) throw error;
   if (!data?.length) throw new ApiError(404, 'Không tìm thấy cấu hình SEO');
 }
 
 export async function deleteSeoHtml(id: string): Promise<void> {
-  const { data, error } = await getSupabase().from('seo_html_contents').delete().eq('id', id).select('id');
+  const { data, error } = await getSupabase().from(TABLES.seoHtml).delete().eq('id', id).select('id');
   if (error) throw error;
   if (!data?.length) throw new ApiError(404, 'Không tìm thấy cấu hình SEO');
 }

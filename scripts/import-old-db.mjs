@@ -39,26 +39,26 @@ await copy(
   'users',
   'SELECT "Id","Email","Name","Password","Slug","CreatedAt","LastUpdatedAt" FROM "user"."User"',
   (r) => ({ id: r.Id, email: String(r.Email).toLowerCase(), name: r.Name ?? '', password: r.Password, slug: r.Slug ?? '', created_at: r.CreatedAt, updated_at: r.LastUpdatedAt }),
-  'users'
+  'bk_users'
 );
 await copy(
   'articles',
   'SELECT "Id","Title","Thumbnail","Slug","Description","Content","AuthorId","Type","Status","CreatedAt","LastUpdatedAt" FROM article."Article"',
   (r) => ({ id: r.Id, title: r.Title, thumbnail: r.Thumbnail ?? '', slug: r.Slug, description: r.Description ?? '', content: r.Content ?? '', author_id: r.AuthorId, type: r.Type, status: r.Status, created_at: r.CreatedAt, updated_at: r.LastUpdatedAt }),
-  'articles'
+  'bk_articles'
 );
 await copy(
   'seo_html_contents',
   'SELECT "Id","Url","HtmlContent","CreatedAt","LastUpdatedAt" FROM config."SeoHtmlContent"',
   (r) => ({ id: r.Id, url: String(r.Url ?? '').replace(/^\/+|\/+$/g, ''), html_content: r.HtmlContent ?? '', created_at: r.CreatedAt, updated_at: r.LastUpdatedAt }),
-  'seo_html_contents'
+  'bk_seo_html_contents'
 );
 try {
   await copy(
     'contact_requests',
     'SELECT "Id","Name","Phone","Email","Message","IsProcessed","CreatedAt","LastUpdatedAt" FROM contact."ContactRequest"',
     (r) => ({ id: r.Id, name: r.Name, phone: r.Phone, email: r.Email, message: r.Message, is_processed: r.IsProcessed, created_at: r.CreatedAt, updated_at: r.LastUpdatedAt }),
-    'contact_requests'
+    'bk_contact_requests'
   );
 } catch (error) {
   console.log('  contact_requests: bỏ qua (', error.message, ')');

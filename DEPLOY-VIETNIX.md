@@ -6,7 +6,7 @@ Cách làm giống dự án `nothue`: gói `deploy/bookingkols.zip` chạy độ
 ## 0. Chuẩn bị (một lần)
 
 - Hosting Vietnix có **Setup Node.js App** (cPanel → Software). Chọn Node.js **20.x hoặc 22.x**. Nếu không thấy mục này, nhờ Vietnix bật Node.js Selector.
-- Supabase đã chạy toàn bộ file trong `supabase/migrations/` (`npm run db:migrate`) và `npm run check:db` báo ổn.
+- Supabase đã chạy migration `supabase/migrations/20261125000100_bookingkols_schema.sql` (`npm run db:migrate`; các bảng đều có tiền tố `bk_` nên dùng chung database được) và `npm run check:db` báo ổn.
 - Dữ liệu cũ đã chép sang bằng `npm run import:old-db`; ảnh KOL nay quản lý trong admin (/admin/kol-management).
 - Hosting dùng chung có giới hạn RAM/CPU theo gói: sau khi chạy, xem **cPanel → Resource Usage**; bookingkols cần khoảng 150–300 MB RAM.
 

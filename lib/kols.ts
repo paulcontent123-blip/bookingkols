@@ -8,6 +8,7 @@ import { kolCardImage, kolSquareImage } from './kol-image';
 import { normalizeSlug } from './slug';
 import { KOL_FIELD_KEYS } from './kol-fields';
 import { POPULAR_KOLS, TOP_PROFILES, type KolProfile, type TopProfile } from './home-data';
+import { TABLES } from './db-tables';
 
 // Danh sách công khai KHÔNG đọc cột is_featured: trang chủ vẫn chạy bình thường kể cả khi chưa chạy migration thêm cột đó.
 const COLUMNS =
@@ -126,7 +127,7 @@ export async function listPublishedKols(params: { pageIndex?: number; pageSize?:
   const { pageIndex, pageSize } = clampPaging(params.pageIndex, params.pageSize ?? KOL_PAGE_SIZE, KOL_PAGE_SIZE);
   const fetchPage = async (page: number) => {
     const { data, count, error } = await getSupabase()
-      .from('kols')
+      .from(TABLES.kols)
       .select(COLUMNS, { count: 'exact' })
       .eq('is_published', true)
       .order('sort_order', { ascending: true })
@@ -162,7 +163,7 @@ export async function listPublishedKols(params: { pageIndex?: number; pageSize?:
 export async function listFeaturedKols(): Promise<TopProfile[]> {
   try {
     const { data, error } = await getSupabase()
-      .from('kols')
+      .from(TABLES.kols)
       .select('id, slug, name, fields, province, avatar')
       .eq('is_featured', true)
       .eq('is_published', true)
@@ -188,7 +189,7 @@ export async function listFeaturedKols(): Promise<TopProfile[]> {
 export async function listKolsAdmin(params: { name?: string; pageIndex?: number; pageSize?: number }): Promise<Paged<KolAdminItem>> {
   const { pageIndex, pageSize } = clampPaging(params.pageIndex, params.pageSize);
   const keyword = safeKeyword(params.name);
-  let query = getSupabase().from('kols').select(ADMIN_COLUMNS, { count: 'exact' });
+  let query = getSupabase().from(TABLES.kols).select(ADMIN_COLUMNS, { count: 'exact' });
   if (keyword) query = query.or(`name.ilike.%${keyword}%,nickname.ilike.%${keyword}%`);
   const { data, count, error } = await query
     .order('sort_order', { ascending: true })
@@ -200,7 +201,7 @@ export async function listKolsAdmin(params: { name?: string; pageIndex?: number;
 
 export async function getKolAdmin(id: string): Promise<KolAdminItem | null> {
   assertId(id);
-  const { data, error } = await getSupabase().from('kols').select(ADMIN_COLUMNS).eq('id', id).maybeSingle();
+  const { data, error } = await getSupabase().from(TABLES.kols).select(ADMIN_COLUMNS).eq('id', id).maybeSingle();
   if (error) throw error;
   return data ? toAdminItem(data as KolRow) : null;
 }
@@ -266,7 +267,7 @@ function parseBody(input: unknown) {
 }
 
 async function assertSlugAvailable(slug: string, exceptId?: string) {
-  const { data, error } = await getSupabase().from('kols').select('id').eq('slug', slug).limit(1).maybeSingle();
+  const { data, error } = await getSupabase().from(TABLES.kols).select('id').eq('slug', slug).limit(1).maybeSingle();
   if (error) throw error;
   if (data && data.id !== exceptId) throw new ApiError(400, 'Đường dẫn đã tồn tại, hãy dùng đường dẫn khác', 'slug');
 }
@@ -283,7 +284,7 @@ async function removeImageQuietly(path: string) {
 export async function createKol(input: unknown): Promise<KolAdminItem> {
   const row = parseBody(input);
   await assertSlugAvailable(row.slug);
-  const { data, error } = await getSupabase().from('kols').insert(row).select(ADMIN_COLUMNS).single();
+  const { data, error } = await getSupabase().from(TABLES.kols).insert(row).select(ADMIN_COLUMNS).single();
   if (error) {
     // Hai người cùng lưu một đường dẫn gần như đồng thời: chỉ mục duy nhất của database chặn lại.
     if ((error as { code?: string }).code === '23505') throw new ApiError(400, 'Đường dẫn đã tồn tại, hãy dùng đường dẫn khác', 'slug');
@@ -295,12 +296,12 @@ export async function createKol(input: unknown): Promise<KolAdminItem> {
 export async function updateKol(id: string, input: unknown): Promise<KolAdminItem> {
   assertId(id);
   const db = getSupabase();
-  const current = await db.from('kols').select('avatar').eq('id', id).maybeSingle();
+  const current = await db.from(TABLES.kols).select('avatar').eq('id', id).maybeSingle();
   if (current.error) throw current.error;
   if (!current.data) throw new ApiError(404, 'Không tìm thấy KOL');
   const row = parseBody(input);
   await assertSlugAvailable(row.slug, id);
-  const { data, error } = await db.from('kols').update(row).eq('id', id).select(ADMIN_COLUMNS).single();
+  const { data, error } = await db.from(TABLES.kols).update(row).eq('id', id).select(ADMIN_COLUMNS).single();
   if (error) {
     if ((error as { code?: string }).code === '23505') throw new ApiError(400, 'Đường dẫn đã tồn tại, hãy dùng đường dẫn khác', 'slug');
     throw error;
@@ -312,7 +313,7 @@ export async function updateKol(id: string, input: unknown): Promise<KolAdminIte
 export async function deleteKol(id: string): Promise<void> {
   assertId(id);
   const db = getSupabase();
-  const { data, error } = await db.from('kols').delete().eq('id', id).select('avatar');
+  const { data, error } = await db.from(TABLES.kols).delete().eq('id', id).select('avatar');
   if (error) throw error;
   if (!data?.length) throw new ApiError(404, 'Không tìm thấy KOL');
   if (data[0].avatar) await removeImageQuietly(data[0].avatar);

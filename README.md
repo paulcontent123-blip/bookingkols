@@ -26,8 +26,9 @@ scripts/        create-admin, import-old-db, check-database, smoke-test, prepare
 
 ## Cài đặt lần đầu
 
-1. **Tạo project Supabase**, mở **SQL Editor**, lần lượt dán rồi **Run** từng file trong `supabase/migrations/` (theo thứ tự tên file:
-   `20261118000100_initial_schema.sql`, sau đó `20261120000100_kols.sql` tạo bảng KOL và nạp sẵn 8 KOL của trang chủ). Hoặc chạy `npm run db:migrate`.
+1. **Tạo project Supabase** (hoặc dùng chung project của dự án khác), mở **SQL Editor**, dán toàn bộ `supabase/migrations/20261125000100_bookingkols_schema.sql` rồi **Run**
+   (hoặc chạy `npm run db:migrate`). File tạo 5 bảng `bk_users`, `bk_articles`, `bk_seo_html_contents`, `bk_contact_requests`, `bk_kols` và nạp sẵn KOL của trang chủ.
+   Mọi bảng có tiền tố `bk_` nên dùng chung database với dự án khác (như BookingModel) không bị trùng tên; tên bảng khai báo ở `lib/db-tables.ts`.
 2. Sao chép `.env.example` thành `.env` và điền: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (Project Settings → API → *service_role*),
    `CLOUDINARY_*`, `JWT_SECRET` (chuỗi ngẫu nhiên dài), `APP_URL`. SMTP điền nếu muốn nhận email khi có liên hệ.
 3. Cài và kiểm tra kết nối:
@@ -52,6 +53,23 @@ Mở `http://localhost:3000` (website) và `http://localhost:3000/admin` (quản
 # Chép người dùng (giữ nguyên mật khẩu), bài viết, config SEO, liên hệ từ PostgreSQL cũ
 OLD_DATABASE_URL="postgres://dev:MAT_KHAU@IP_SERVER_CU:5433/bookingkol" npm run import:old-db
 ```
+
+## Đổi sang database Supabase khác (ví dụ dùng chung với BookingModel)
+
+```powershell
+# 1. Sửa SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY (và SUPABASE_DB_URL nếu dùng db:migrate) trong .env sang project MỚI, rồi tạo bảng:
+npm run db:migrate
+
+# 2. Chép dữ liệu từ project CŨ (bảng tên cũ users, articles, ...) sang bảng bk_ của project mới. Mặc định chỉ ĐẾM, không ghi gì:
+$env:OLD_SUPABASE_URL="https://xxxx.supabase.co"; $env:OLD_SUPABASE_SERVICE_ROLE_KEY="khoa-cu"
+npm run copy:old-supabase
+
+# 3. Số liệu đúng thì ghi thật (giữ nguyên id, mật khẩu băm, ngày tạo; chỉ đọc database cũ):
+npm run copy:old-supabase -- --apply
+npm run check:db
+```
+
+Ảnh nằm trên Cloudinary nên không cần chép. Nhớ đổi cả biến `SUPABASE_*` trên Vercel/hosting rồi deploy lại.
 
 Danh sách KOL ở trang chủ nay do admin quản lý tại **/admin/kol-management** (thêm, sửa, xoá, ẩn/hiện, sắp thứ tự; ảnh tải lên Cloudinary và tự cắt vừa khung thẻ), không còn gõ cứng trong mã.
 

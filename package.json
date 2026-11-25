@@ -15,7 +15,8 @@
     "start:standalone": "node .next/standalone/server.js",
     "smoke": "node --env-file=.env scripts/smoke-test.mjs",
     "db:migrate": "node --env-file=.env scripts/apply-schema.mjs",
-    "dev:preview": "node scripts/dev-preview.mjs"
+    "dev:preview": "node scripts/dev-preview.mjs",
+    "copy:old-supabase": "node --env-file=.env scripts/copy-from-old-supabase.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.1",

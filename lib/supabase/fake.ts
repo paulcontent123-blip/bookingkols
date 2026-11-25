@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 /**
  * DATABASE GIẢ TRONG BỘ NHỚ — CHỈ ĐỂ KIỂM THỬ CỤC BỘ khi chưa có Supabase (đặt BOOKINGKOLS_FAKE_DB=1).
  * Mô phỏng phần nhỏ của supabase-js mà ứng dụng dùng: from/select/insert/update/delete, eq/neq/gt/ilike/or,
- * order/range/limit/single/maybeSingle, count, và quan hệ articles.author -> users.
+ * order/range/limit/single/maybeSingle, count, và quan hệ bk_articles.author -> bk_users.
  * Dữ liệu mất khi tắt máy chủ. KHÔNG bao giờ được bật ở môi trường chạy thật (file server.ts chặn).
  */
 
@@ -18,12 +18,12 @@ interface Result {
 
 // Lưu trên globalThis: chế độ dev của Next có thể nạp module nhiều lần (mỗi route một bản).
 const g = globalThis as unknown as { __bookingkolsFakeDb?: Record<string, Row[]> };
-const tables: Record<string, Row[]> = (g.__bookingkolsFakeDb ??= { users: [], articles: [], seo_html_contents: [], contact_requests: [], kols: [] });
+const tables: Record<string, Row[]> = (g.__bookingkolsFakeDb ??= { bk_users: [], bk_articles: [], bk_seo_html_contents: [], bk_contact_requests: [], bk_kols: [] });
 
 // Có thể gieo sẵn một tài khoản quản trị để thử đăng nhập (FAKE_ADMIN_EMAIL / FAKE_ADMIN_PASSWORD).
-if (process.env.FAKE_ADMIN_EMAIL && process.env.FAKE_ADMIN_PASSWORD && tables.users.length === 0) {
+if (process.env.FAKE_ADMIN_EMAIL && process.env.FAKE_ADMIN_PASSWORD && tables.bk_users.length === 0) {
   const now = new Date().toISOString();
-  tables.users.push({
+  tables.bk_users.push({
     id: crypto.randomUUID(),
     email: process.env.FAKE_ADMIN_EMAIL.toLowerCase(),
     name: "Admin thu",
@@ -34,10 +34,10 @@ if (process.env.FAKE_ADMIN_EMAIL && process.env.FAKE_ADMIN_PASSWORD && tables.us
   });
 }
 const uniques: Record<string, (row: Row) => string | null> = {
-  users: (r) => String(r.email ?? '').toLowerCase(),
-  articles: (r) => String(r.slug ?? ''),
-  seo_html_contents: (r) => String(r.url ?? ''),
-  kols: (r) => String(r.slug ?? '')
+  bk_users: (r) => String(r.email ?? '').toLowerCase(),
+  bk_articles: (r) => String(r.slug ?? ''),
+  bk_seo_html_contents: (r) => String(r.url ?? ''),
+  bk_kols: (r) => String(r.slug ?? '')
 };
 
 const get = (row: Row, path: string): unknown => {
@@ -71,8 +71,8 @@ class Query implements PromiseLike<Result> {
 
   select(cols?: string, opts?: { count?: 'exact'; head?: boolean }) {
     if (this.op === 'select') {
-      this.joinUsers = Boolean(cols && /users/.test(cols));
-      this.innerJoin = Boolean(cols && /users!inner/.test(cols));
+      this.joinUsers = Boolean(cols && /bk_users/.test(cols));
+      this.innerJoin = Boolean(cols && /bk_users!inner/.test(cols));
     } else this.returning = true;
     this.countExact = opts?.count === 'exact';
     this.head = Boolean(opts?.head);
@@ -139,8 +139,8 @@ class Query implements PromiseLike<Result> {
   }
 
   private withRelations(row: Row): Row {
-    if (!this.joinUsers || this.table !== 'articles') return row;
-    const author = tables.users.find((u) => u.id === row.author_id);
+    if (!this.joinUsers || this.table !== 'bk_articles') return row;
+    const author = tables.bk_users.find((u) => u.id === row.author_id);
     return { ...row, author: author ? { name: author.name, slug: author.slug, email: author.email } : null };
   }
 
@@ -153,7 +153,7 @@ class Query implements PromiseLike<Result> {
       const created: Row[] = [];
       for (const raw of Array.isArray(this.payload) ? this.payload : [this.payload as Row]) {
         const row: Row = { id: crypto.randomUUID(), created_at: now, updated_at: now, ...raw };
-        if (this.table === 'contact_requests') row.is_processed ??= false;
+        if (this.table === 'bk_contact_requests') row.is_processed ??= false;
         const key = uniques[this.table]?.(row);
         if (key !== undefined && key !== null && rows.some((r) => uniques[this.table](r) === key)) {
           return { data: null, error: { code: '23505', message: 'duplicate key value violates unique constraint' } };

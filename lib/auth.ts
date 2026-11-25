@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import { cookies } from 'next/headers';
 import { config } from './config';
 import { getSupabase } from './supabase/server';
+import { TABLES } from './db-tables';
 
 export const SESSION_COOKIE = 'bk_admin';
 const SESSION_HOURS = 12;
@@ -68,7 +69,7 @@ export async function getSession(): Promise<AdminUser | null> {
     const { payload } = await jwtVerify(token, secretKey());
     if (!payload.sub) return null;
     const { data } = await getSupabase()
-      .from('users')
+      .from(TABLES.users)
       .select('id, email, name, slug, password')
       .eq('id', payload.sub)
       .maybeSingle();

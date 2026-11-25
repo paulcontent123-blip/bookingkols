@@ -3,6 +3,7 @@ import { clearLoginFailures, isLoginBlocked, recordLoginFailure, setSession, ver
 import { ApiError, fail, ok } from '@/lib/errors';
 import { clientIp, readJson } from '@/lib/api';
 import { getSupabase } from '@/lib/supabase/server';
+import { TABLES } from '@/lib/db-tables';
 
 export const dynamic = 'force-dynamic';
 
@@ -16,7 +17,7 @@ export async function POST(req: NextRequest) {
     if (!email || !password) throw new ApiError(400, 'Vui lòng nhập email và mật khẩu');
 
     const { data: user } = await getSupabase()
-      .from('users')
+      .from(TABLES.users)
       .select('id, email, name, slug, password')
       .ilike('email', email)
       .limit(1)
